@@ -5,7 +5,7 @@ import {
   Star, MapPin, Phone, Mail, Clock, ChevronRight, Stethoscope, Sparkles, CheckCircle2
 } from 'lucide-react'
 
-const DOCTOR_IMG = 'https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=560&h=680&fit=crop&auto=format'
+const DOCTOR_IMG = 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=560&h=680&fit=crop&auto=format'
 const ABOUT_IMG = 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=560&h=500&fit=crop&auto=format'
 
 const stats = [

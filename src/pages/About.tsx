@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, Award, BookOpen, Heart, Shield, CheckCircle, Activity, Sparkles } from 'lucide-react'
 
-const DOCTOR_IMG = 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=560&h=660&fit=crop&auto=format'
+const DOCTOR_IMG = 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=560&h=660&fit=crop&auto=format'
 
 function FadeSection({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   const ref = useRef<HTMLDivElement>(null)
