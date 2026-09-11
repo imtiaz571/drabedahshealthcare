@@ -10,15 +10,8 @@ const navLinks = [
 ]
 
 export default function Header() {
-  const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const { pathname } = useLocation()
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20)
-    window.addEventListener('scroll', onScroll, { passive: true })
-    return () => window.removeEventListener('scroll', onScroll)
-  }, [])
 
   useEffect(() => {
     setMenuOpen(false)
@@ -39,9 +32,9 @@ export default function Header() {
           right: 0,
           zIndex: 50,
           transition: 'all 0.3s ease',
-          background: scrolled ? 'rgba(255,255,255,0.97)' : 'transparent',
-          backdropFilter: scrolled ? 'blur(12px)' : 'none',
-          boxShadow: scrolled ? '0 1px 0 rgba(0,0,0,0.08)' : 'none',
+          background: '#fff',
+          backdropFilter: 'blur(12px)',
+          boxShadow: '0 1px 0 rgba(0,0,0,0.08)',
         }}
       >
         <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 32px', display: 'flex', alignItems: 'center', height: 72 }}>
