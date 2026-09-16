@@ -85,17 +85,17 @@ export default function Home() {
   return (
     <div>
       {/* ── HERO ── */}
-      <section style={{ minHeight: '100vh', background: 'var(--off-white)', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center', paddingTop: 72 }}>
-        {/* Orange diagonal panel */}
-        <div style={{
+      <section className="hero-section" style={{ minHeight: '100vh', background: 'var(--off-white)', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center', paddingTop: 72 }}>
+        {/* Orange diagonal panel - visible on desktop, hidden on mobile */}
+        <div className="hero-orange-panel" style={{
           position: 'absolute', right: 0, top: 0, bottom: 0,
           width: '52%',
           background: 'var(--orange)',
           clipPath: 'polygon(12% 0, 100% 0, 100% 100%, 0 100%)',
           zIndex: 0,
         }} />
-        {/* Decorative dots */}
-        <div style={{ position: 'absolute', top: 140, left: 60, opacity: 0.06, zIndex: 0 }}>
+        {/* Decorative dots - hidden on mobile */}
+        <div className="hero-dots" style={{ position: 'absolute', top: 140, left: 60, opacity: 0.06, zIndex: 0 }}>
           {Array.from({ length: 6 }).map((_, r) => (
             <div key={r} style={{ display: 'flex', gap: 18, marginBottom: 18 }}>
               {Array.from({ length: 6 }).map((_, c) => (
@@ -105,33 +105,33 @@ export default function Home() {
           ))}
         </div>
 
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '80px 32px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40, alignItems: 'center', position: 'relative', zIndex: 1, width: '100%' }}>
+        <div className="hero-container" style={{ maxWidth: 1280, margin: '0 auto', padding: '80px 32px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40, alignItems: 'center', position: 'relative', zIndex: 1, width: '100%' }}>
           {/* Left: text */}
-          <div>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'var(--orange-light)', border: '1px solid rgba(255,90,31,0.2)', padding: '6px 14px', borderRadius: 20, marginBottom: 20 }}>
+          <div className="hero-text-col">
+            <div className="hero-bmdc-badge" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'var(--orange-light)', border: '1px solid rgba(255,90,31,0.2)', padding: '6px 14px', borderRadius: 20, marginBottom: 20 }}>
               <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--orange)' }}></span>
               <span style={{ fontFamily: 'Manrope', fontWeight: 700, fontSize: '0.8rem', color: 'var(--orange-dark)', letterSpacing: '0.04em' }}>
                 BMDC REG NO: A-56758 · CONSULTANT SONOLOGIST
               </span>
             </div>
 
-            <h1 style={{ fontSize: 'clamp(2.4rem, 4.5vw, 3.8rem)', marginBottom: 8, letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+            <h1 className="hero-title" style={{ fontSize: 'clamp(2.4rem, 4.5vw, 3.8rem)', marginBottom: 8, letterSpacing: '-0.02em', lineHeight: 1.1 }}>
               Dr. Abedah Begum Fazlur
             </h1>
 
-            <div style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--orange-dark)', marginBottom: 12 }}>
+            <div className="hero-degrees" style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--orange-dark)', marginBottom: 12 }}>
               MBBS (SUST) · DMU (DIU) · CMU (CMUD) · CCD (BIRDEM) · PGT (SOMCH)
             </div>
 
-            <div style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--black)', marginBottom: 16 }}>
+            <div className="hero-tagline" style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--black)', marginBottom: 16 }}>
               Dr. Abedah's Sono Healthcare — <span style={{ color: 'var(--orange)', fontStyle: 'italic' }}>"Giving Your Disease A Name"</span>
             </div>
 
-            <p style={{ fontSize: '1.05rem', lineHeight: 1.75, color: '#444', maxWidth: 520, marginBottom: 32 }}>
+            <p className="hero-desc" style={{ fontSize: '1.05rem', lineHeight: 1.75, color: '#444', maxWidth: 520, marginBottom: 32 }}>
               Specialised in Transvaginal Sonography (TVS), Advanced Obstetrical Ultrasound, MSK &amp; Duplex Doppler Study. Trained in Medicine &amp; Gynaecology to provide comprehensive, high-precision diagnostics.
             </p>
 
-            <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+            <div className="hero-cta-group" style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
               <Link to="/appointment" className="btn-primary">
                 Book Appointment <ArrowRight size={16} />
               </Link>
@@ -141,7 +141,7 @@ export default function Home() {
             </div>
 
             {/* Trust badge */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 36 }}>
+            <div className="hero-trust-badge" style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 36 }}>
               <div style={{ display: 'flex', gap: -4 }}>
                 {[1, 2, 3, 4, 5].map(i => (
                   <Star key={i} size={16} fill="var(--orange)" color="var(--orange)" />
@@ -154,9 +154,9 @@ export default function Home() {
           </div>
 
           {/* Right: doctor image */}
-          <div style={{ position: 'relative', display: 'flex', justifyContent: 'center' }}>
+          <div className="hero-image-col" style={{ position: 'relative', display: 'flex', justifyContent: 'center' }}>
             {/* White circle behind image */}
-            <div style={{
+            <div className="hero-image-backdrop" style={{
               width: 420, height: 500,
               borderRadius: '60% 40% 50% 50% / 50% 50% 60% 40%',
               background: 'rgba(255,255,255,0.15)',
@@ -167,6 +167,7 @@ export default function Home() {
             <img
               src={DOCTOR_IMG}
               alt="Dr. Abedah Begum Fazlur, Consultant Sonologist"
+              className="hero-doc-img"
               style={{
                 width: 380, height: 480,
                 objectFit: 'cover',
@@ -177,13 +178,13 @@ export default function Home() {
               }}
             />
             {/* Floating card */}
-            <div style={{
+            <div className="hero-floating-card" style={{
               position: 'absolute', bottom: 30, left: -20, zIndex: 2,
               background: '#fff', borderRadius: 12, padding: '14px 20px',
               boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
               display: 'flex', alignItems: 'center', gap: 12,
             }}>
-              <div style={{ width: 44, height: 44, background: 'var(--orange-light)', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ width: 44, height: 44, background: 'var(--orange-light)', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                 <Award size={22} color="var(--orange)" />
               </div>
               <div>
@@ -470,8 +471,106 @@ export default function Home() {
 
       <style>{`
         @media (max-width: 768px) {
+          /* 1. Hide the full-height desktop diagonal orange panel so text NEVER blends on mobile */
+          .hero-orange-panel {
+            display: none !important;
+          }
+
+          /* 2. Hide background dots on mobile to eliminate clutter */
+          .hero-dots {
+            display: none !important;
+          }
+
+          /* 3. Hero layout on mobile */
+          .hero-section {
+            min-height: auto !important;
+            padding-top: 88px !important;
+            padding-bottom: 28px !important;
+          }
+
+          .hero-container {
+            grid-template-columns: 1fr !important;
+            padding: 24px 20px 32px !important;
+            gap: 36px !important;
+          }
+
+          /* 4. Refined mobile typography & spacing */
+          .hero-bmdc-badge {
+            margin-bottom: 16px !important;
+            padding: 5px 12px !important;
+          }
+
+          .hero-bmdc-badge span:last-child {
+            font-size: 0.72rem !important;
+          }
+
+          .hero-title {
+            font-size: 2.15rem !important;
+            line-height: 1.15 !important;
+            margin-bottom: 12px !important;
+          }
+
+          .hero-degrees {
+            font-size: 0.88rem !important;
+            line-height: 1.45 !important;
+            margin-bottom: 12px !important;
+          }
+
+          .hero-tagline {
+            font-size: 1.05rem !important;
+            line-height: 1.4 !important;
+            margin-bottom: 16px !important;
+          }
+
+          .hero-desc {
+            font-size: 0.95rem !important;
+            line-height: 1.65 !important;
+            margin-bottom: 24px !important;
+          }
+
+          .hero-cta-group {
+            gap: 12px !important;
+          }
+
+          .hero-trust-badge {
+            margin-top: 24px !important;
+          }
+
+          /* 5. Doctor image on mobile: responsive sizing with dedicated brand orange backdrop */
+          .hero-image-col {
+            margin-top: 8px !important;
+            padding-bottom: 20px !important;
+          }
+
+          .hero-image-backdrop {
+            width: min(320px, 86vw) !important;
+            height: 380px !important;
+            background: linear-gradient(135deg, var(--orange) 0%, var(--orange-dark) 100%) !important;
+            opacity: 0.95 !important;
+            border-radius: 46% 54% 42% 58% / 52% 44% 56% 48% !important;
+          }
+
+          .hero-doc-img {
+            width: min(290px, 78vw) !important;
+            height: 360px !important;
+            box-shadow: 0 20px 48px rgba(255, 90, 31, 0.25) !important;
+          }
+
+          /* 6. Centered floating badge on mobile so it stays completely on-screen */
+          .hero-floating-card {
+            position: absolute !important;
+            left: 50% !important;
+            transform: translateX(-50%) !important;
+            bottom: 8px !important;
+            width: calc(100% - 32px) !important;
+            max-width: 290px !important;
+            padding: 10px 14px !important;
+          }
+
+          /* 7. Grid collapsing for other 2-column sections */
           section > div[style*="grid-template-columns: 1fr 1fr"] {
             grid-template-columns: 1fr !important;
+            gap: 36px !important;
           }
         }
       `}</style>
