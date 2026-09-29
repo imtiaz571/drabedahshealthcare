@@ -8,7 +8,7 @@ interface FormData {
   service: string
   date: Date | null
   time: string
-  reason: string; notes: string
+  notes: string
 }
 
 type Errors = Partial<Record<keyof FormData, string>>
@@ -48,7 +48,6 @@ function MiniCalendar({ value, onChange }: { value: Date | null; onChange: (d: D
 
   return (
     <div style={{ background: '#fff', borderRadius: 12, border: '1.5px solid var(--border)', padding: '20px', maxWidth: 340 }}>
-      {/* Header */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
         <button onClick={prevMonth} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 6, borderRadius: 6, color: 'var(--muted)', transition: 'background 0.2s' }}
           onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'var(--orange-light)' }}
@@ -67,14 +66,12 @@ function MiniCalendar({ value, onChange }: { value: Date | null; onChange: (d: D
         </button>
       </div>
 
-      {/* Day labels */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 2, marginBottom: 8 }}>
         {DAYS.map(d => (
           <div key={d} style={{ textAlign: 'center', fontSize: '0.7rem', fontWeight: 600, color: 'var(--muted)', padding: '4px 0', fontFamily: 'Manrope' }}>{d}</div>
         ))}
       </div>
 
-      {/* Day cells */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 2 }}>
         {cells.map((day, idx) => {
           if (day === null) return <div key={idx} />
@@ -88,7 +85,14 @@ function MiniCalendar({ value, onChange }: { value: Date | null; onChange: (d: D
               disabled={isPast}
               onClick={() => onChange(date)}
               className={`calendar-day ${isPast ? 'disabled' : ''} ${isSelected ? 'selected' : ''} ${isToday && !isSelected ? 'today' : ''}`}
-              style={{ fontSize: '0.875rem', fontFamily: 'Inter', border: 'none', background: 'none', cursor: isPast ? 'not-allowed' : 'pointer' }}
+              style={{
+                fontSize: '0.875rem',
+                fontFamily: 'Inter',
+                border: 'none',
+                cursor: isPast ? 'not-allowed' : 'pointer',
+                background: isSelected ? 'var(--orange)' : 'none',
+                color: isSelected ? '#fff' : undefined,
+              }}
             >
               {day}
             </button>
@@ -100,7 +104,7 @@ function MiniCalendar({ value, onChange }: { value: Date | null; onChange: (d: D
 }
 
 // ── Step indicator ─────────────────────────────────────
-const STEPS = ['Info', 'Service', 'Date', 'Time', 'Reason', 'Review']
+const STEPS = ['Info', 'Service', 'Date & Time', 'Review']
 
 function StepBar({ current }: { current: number }) {
   return (
@@ -141,8 +145,7 @@ function validateStep(step: number, data: FormData): Errors {
   }
   if (step === 2 && !data.service) errs.service = 'Please select a diagnostic or consultation service'
   if (step === 3 && !data.date) errs.date = 'Please select a preferred date'
-  if (step === 4 && !data.time) errs.time = 'Please select an appointment time slot'
-  if (step === 5 && !data.reason.trim()) errs.reason = 'Reason for scan / consultation is required'
+  if (step === 3 && !data.time) errs.time = 'Please select an appointment time slot'
   return errs
 }
 
@@ -156,7 +159,7 @@ export default function Appointment() {
     service: '',
     date: null,
     time: '',
-    reason: '', notes: '',
+    notes: '',
   })
 
   const update = useCallback(<K extends keyof FormData>(key: K, val: FormData[K]) => {
@@ -173,7 +176,7 @@ export default function Appointment() {
 
   const back = () => { setErrors({}); setStep(s => s - 1) }
   const confirm = () => setConfirmed(true)
-  const reset = () => { setStep(1); setConfirmed(false); setData({ name: '', phone: '', email: '', service: '', date: null, time: '', reason: '', notes: '' }) }
+  const reset = () => { setStep(1); setConfirmed(false); setData({ name: '', phone: '', email: '', service: '', date: null, time: '', notes: '' }) }
 
   const selectedService = SERVICES.find(s => s.id === data.service)
 
@@ -188,9 +191,8 @@ export default function Appointment() {
             <div className="section-label" style={{ marginBottom: 12 }}>Booking Request Submitted</div>
             <h1 style={{ fontSize: 'clamp(1.8rem, 4vw, 2.6rem)', marginBottom: 16 }}>Appointment Request Received</h1>
             <p style={{ color: 'var(--muted)', lineHeight: 1.7, marginBottom: 40 }}>
-              Thank you, {data.name.split(' ')[0]}. Your appointment request has been submitted to Dr. Abedah's Sono Healthcare. Our clinic team will confirm your slot at <strong>{data.phone}</strong> and <strong>{data.email}</strong>.
+              Thank you, {data.name.split(' ')[0]}. Your appointment request has been submitted to Dr. Abedah&#39;s Sono Healthcare. Our clinic team will confirm your slot at <strong>{data.phone}</strong> and <strong>{data.email}</strong>.
             </p>
-            {/* Summary card */}
             <div style={{ background: '#fff', borderRadius: 12, border: '1.5px solid var(--border)', padding: '28px', textAlign: 'left', marginBottom: 32 }}>
               <h3 style={{ fontFamily: 'Manrope', fontWeight: 800, fontSize: '1rem', marginBottom: 20, color: 'var(--black)' }}>Appointment Summary</h3>
               {[
@@ -201,7 +203,6 @@ export default function Appointment() {
                 ['Time Slot', data.time],
                 ['Phone', data.phone],
                 ['Email', data.email],
-                ['Reason / Prescription', data.reason],
                 ['Clinic Location', '43 East Stadium Market (Ground Floor), Rikabibazar, Sylhet'],
                 ['Clinic Hotline', '+880 1727 414 991, +88 09611 656906'],
               ].map(([label, val]) => (
@@ -227,10 +228,9 @@ export default function Appointment() {
 
   return (
     <div style={{ background: 'var(--off-white)', minHeight: '100vh', paddingTop: 72 }}>
-      {/* Hero */}
       <div style={{ background: 'var(--black)', padding: 'clamp(40px, 6vw, 72px) 32px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: '50%', right: '10%', transform: 'translateY(-50%)', width: 300, height: 300, background: 'var(--orange)', borderRadius: '50%', opacity: 0.07 }} />
-        <div className="section-label" style={{ marginBottom: 12 }}>Dr. Abedah's Sono Healthcare</div>
+        <div className="section-label" style={{ marginBottom: 12 }}>Dr. Abedah&#39;s Sono Healthcare</div>
         <h1 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', color: '#fff', marginBottom: 12 }}>Book an Appointment</h1>
         <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '1rem', maxWidth: 600, margin: '0 auto' }}>
           Schedule your diagnostic ultrasound or clinical consultation with Dr. Abedah Begum Fazlur (Consultant Sonologist, BMDC Reg: A-56758).
@@ -240,11 +240,10 @@ export default function Appointment() {
       <div style={{ maxWidth: 760, margin: '0 auto', padding: '56px 32px' }}>
         <StepBar current={step} />
 
-        {/* ── STEP 1: Patient Info ── */}
         {step === 1 && (
           <div>
             <h2 style={{ fontFamily: 'Manrope', fontWeight: 800, fontSize: '1.5rem', marginBottom: 8 }}>Patient Information</h2>
-            <p style={{ color: 'var(--muted)', marginBottom: 32 }}>Please provide the patient's contact information to begin.</p>
+            <p style={{ color: 'var(--muted)', marginBottom: 32 }}>Please provide the patient&#39;s contact information to begin.</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
               {([
                 { key: 'name', label: 'Patient Full Name', type: 'text', placeholder: 'e.g. Shamima Akther' },
@@ -268,7 +267,6 @@ export default function Appointment() {
           </div>
         )}
 
-        {/* ── STEP 2: Select Service ── */}
         {step === 2 && (
           <div>
             <h2 style={{ fontFamily: 'Manrope', fontWeight: 800, fontSize: '1.5rem', marginBottom: 8 }}>Select Scan or Consultation</h2>
@@ -306,105 +304,73 @@ export default function Appointment() {
           </div>
         )}
 
-        {/* ── STEP 3: Select Date ── */}
         {step === 3 && (
           <div>
-            <h2 style={{ fontFamily: 'Manrope', fontWeight: 800, fontSize: '1.5rem', marginBottom: 8 }}>Select Appointment Date</h2>
-            <p style={{ color: 'var(--muted)', marginBottom: 32 }}>Choose your preferred appointment day at Dr. Abedah's Sono Healthcare.</p>
-            {errors.date && <div style={{ color: '#e53e3e', fontSize: '0.875rem', marginBottom: 16 }}>{errors.date}</div>}
-            <MiniCalendar value={data.date} onChange={d => update('date', d)} />
-            {data.date && (
-              <div style={{ marginTop: 16, padding: '12px 16px', background: 'var(--orange-light)', borderRadius: 8, display: 'flex', alignItems: 'center', gap: 10 }}>
-                <Calendar size={16} color="var(--orange)" />
-                <span style={{ fontFamily: 'Manrope', fontWeight: 600, fontSize: '0.875rem', color: 'var(--orange-dark)' }}>
-                  Selected Date: {data.date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-                </span>
+            <h2 style={{ fontFamily: 'Manrope', fontWeight: 800, fontSize: '1.5rem', marginBottom: 8 }}>Select Date &amp; Time</h2>
+            <p style={{ color: 'var(--muted)', marginBottom: 32 }}>Choose your preferred appointment day and time slot at Dr. Abedah&#39;s Sono Healthcare.</p>
+
+            <div style={{ marginBottom: 32 }}>
+              <div style={{ fontFamily: 'Manrope', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.07em', color: 'var(--muted)', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
+                <Calendar size={15} color="var(--orange)" /> Appointment Date
               </div>
-            )}
+              {errors.date && <div style={{ color: '#e53e3e', fontSize: '0.875rem', marginBottom: 12 }}>{errors.date}</div>}
+              <MiniCalendar value={data.date} onChange={d => update('date', d)} />
+              {data.date && (
+                <div style={{ marginTop: 12, padding: '12px 16px', background: 'var(--orange-light)', borderRadius: 8, display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <Calendar size={16} color="var(--orange)" />
+                  <span style={{ fontFamily: 'Manrope', fontWeight: 600, fontSize: '0.875rem', color: 'var(--orange-dark)' }}>
+                    {data.date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            <div>
+              <div style={{ fontFamily: 'Manrope', fontWeight: 700, fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '0.07em', color: 'var(--muted)', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
+                <Clock size={15} color="var(--orange)" /> Appointment Time
+              </div>
+              {errors.time && <div style={{ color: '#e53e3e', fontSize: '0.875rem', marginBottom: 12 }}>{errors.time}</div>}
+              <div style={{ marginBottom: 8, fontFamily: 'Manrope', fontWeight: 700, fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--muted)' }}>Morning Shift</div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(110px, 1fr))', gap: 10, marginBottom: 20 }}>
+                {MORNING_SLOTS.map(slot => (
+                  <button
+                    key={slot}
+                    disabled={UNAVAILABLE.includes(slot)}
+                    onClick={() => update('time', slot)}
+                    className={`time-slot ${UNAVAILABLE.includes(slot) ? 'unavailable' : ''} ${data.time === slot ? 'selected' : ''}`}
+                    style={{ border: 'none', cursor: UNAVAILABLE.includes(slot) ? 'not-allowed' : 'pointer' }}
+                  >
+                    {slot}
+                  </button>
+                ))}
+              </div>
+              <div style={{ marginBottom: 8, fontFamily: 'Manrope', fontWeight: 700, fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--muted)' }}>Afternoon / Evening Shift</div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(110px, 1fr))', gap: 10 }}>
+                {AFTERNOON_SLOTS.map(slot => (
+                  <button
+                    key={slot}
+                    disabled={UNAVAILABLE.includes(slot)}
+                    onClick={() => update('time', slot)}
+                    className={`time-slot ${UNAVAILABLE.includes(slot) ? 'unavailable' : ''} ${data.time === slot ? 'selected' : ''}`}
+                    style={{ border: 'none', cursor: UNAVAILABLE.includes(slot) ? 'not-allowed' : 'pointer' }}
+                  >
+                    {slot}
+                  </button>
+                ))}
+              </div>
+              {data.time && (
+                <div style={{ marginTop: 16, padding: '12px 16px', background: 'var(--orange-light)', borderRadius: 8, display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <Clock size={16} color="var(--orange)" />
+                  <span style={{ fontFamily: 'Manrope', fontWeight: 600, fontSize: '0.875rem', color: 'var(--orange-dark)' }}>
+                    Selected Time Slot: {data.time}
+                  </span>
+                </div>
+              )}
+            </div>
           </div>
         )}
 
-        {/* ── STEP 4: Select Time ── */}
         {step === 4 && (
-          <div>
-            <h2 style={{ fontFamily: 'Manrope', fontWeight: 800, fontSize: '1.5rem', marginBottom: 8 }}>Select Time Slot</h2>
-            <p style={{ color: 'var(--muted)', marginBottom: 32 }}>Choose an available slot. Clinic timings: Morning &amp; Afternoon / Evening shifts.</p>
-            {errors.time && <div style={{ color: '#e53e3e', fontSize: '0.875rem', marginBottom: 16 }}>{errors.time}</div>}
-            <div style={{ marginBottom: 8, fontFamily: 'Manrope', fontWeight: 700, fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--muted)' }}>Morning Shift</div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(110px, 1fr))', gap: 10, marginBottom: 24 }}>
-              {MORNING_SLOTS.map(slot => (
-                <button
-                  key={slot}
-                  disabled={UNAVAILABLE.includes(slot)}
-                  onClick={() => update('time', slot)}
-                  className={`time-slot ${UNAVAILABLE.includes(slot) ? 'unavailable' : ''} ${data.time === slot ? 'selected' : ''}`}
-                  style={{ border: 'none', cursor: UNAVAILABLE.includes(slot) ? 'not-allowed' : 'pointer' }}
-                >
-                  {slot}
-                </button>
-              ))}
-            </div>
-            <div style={{ marginBottom: 8, fontFamily: 'Manrope', fontWeight: 700, fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--muted)' }}>Afternoon / Evening Shift</div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(110px, 1fr))', gap: 10 }}>
-              {AFTERNOON_SLOTS.map(slot => (
-                <button
-                  key={slot}
-                  disabled={UNAVAILABLE.includes(slot)}
-                  onClick={() => update('time', slot)}
-                  className={`time-slot ${UNAVAILABLE.includes(slot) ? 'unavailable' : ''} ${data.time === slot ? 'selected' : ''}`}
-                  style={{ border: 'none', cursor: UNAVAILABLE.includes(slot) ? 'not-allowed' : 'pointer' }}
-                >
-                  {slot}
-                </button>
-              ))}
-            </div>
-            {data.time && (
-              <div style={{ marginTop: 20, padding: '12px 16px', background: 'var(--orange-light)', borderRadius: 8, display: 'flex', alignItems: 'center', gap: 10 }}>
-                <Clock size={16} color="var(--orange)" />
-                <span style={{ fontFamily: 'Manrope', fontWeight: 600, fontSize: '0.875rem', color: 'var(--orange-dark)' }}>
-                  Selected Time Slot: {data.time}
-                </span>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* ── STEP 5: Reason ── */}
-        {step === 5 && (
-          <div>
-            <h2 style={{ fontFamily: 'Manrope', fontWeight: 800, fontSize: '1.5rem', marginBottom: 8 }}>Prescription &amp; Reason for Visit</h2>
-            <p style={{ color: 'var(--muted)', marginBottom: 32 }}>Please mention any symptoms, doctor referrals, or specific scan instructions.</p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-              <div className="form-field">
-                <label htmlFor="reason">Reason / Advised Scan <span style={{ color: 'var(--orange)' }}>*</span></label>
-                <textarea
-                  id="reason"
-                  placeholder="e.g. Referred by Dr. X for TVS / Pregnancy anomaly scan at 20 weeks / Pelvic pain / Knee Doppler..."
-                  rows={4}
-                  value={data.reason}
-                  onChange={e => update('reason', e.target.value)}
-                  className={errors.reason ? 'error' : ''}
-                  style={{ resize: 'vertical' }}
-                />
-                {errors.reason && <div className="error-msg">{errors.reason}</div>}
-              </div>
-              <div className="form-field">
-                <label htmlFor="notes">Additional Medical Notes / Allergies <span style={{ color: 'var(--muted)', fontWeight: 400 }}>(optional)</span></label>
-                <textarea
-                  id="notes"
-                  placeholder="Previous scan reports, gestational age, diabetic history, or other details..."
-                  rows={3}
-                  value={data.notes}
-                  onChange={e => update('notes', e.target.value)}
-                  style={{ resize: 'vertical' }}
-                />
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* ── STEP 6: Review ── */}
-        {step === 6 && (
           <div>
             <h2 style={{ fontFamily: 'Manrope', fontWeight: 800, fontSize: '1.5rem', marginBottom: 8 }}>Review Appointment Details</h2>
             <p style={{ color: 'var(--muted)', marginBottom: 32 }}>Please double check all information before confirming your appointment request.</p>
@@ -412,7 +378,7 @@ export default function Appointment() {
               <div style={{ background: 'var(--orange)', padding: '20px 24px', display: 'flex', alignItems: 'center', gap: 14 }}>
                 <div style={{ width: 44, height: 44, background: 'rgba(255,255,255,0.2)', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Manrope', fontWeight: 800, color: '#fff', fontSize: '1.2rem' }}>A</div>
                 <div>
-                  <div style={{ fontFamily: 'Manrope', fontWeight: 800, color: '#fff', fontSize: '1.05rem' }}>Dr. Abedah's Sono Healthcare</div>
+                  <div style={{ fontFamily: 'Manrope', fontWeight: 800, color: '#fff', fontSize: '1.05rem' }}>Dr. Abedah&#39;s Sono Healthcare</div>
                   <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.9)' }}>Dr. Abedah Begum Fazlur · Consultant Sonologist (BMDC: A-56758)</div>
                   <div style={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.75)', marginTop: 2 }}>43 East Stadium Market (Ground Floor), Rikabibazar, Sylhet</div>
                 </div>
@@ -425,7 +391,6 @@ export default function Appointment() {
                   ['Preferred Time', data.time],
                   ['Contact Phone', data.phone],
                   ['Email Address', data.email],
-                  ['Reason for Visit', data.reason],
                   ...(data.notes ? [['Notes', data.notes]] : []),
                 ].map(([label, val]) => (
                   <div key={label} style={{ display: 'flex', gap: 16, padding: '10px 0', borderBottom: '1px solid var(--border)', alignItems: 'flex-start' }}>
@@ -436,19 +401,18 @@ export default function Appointment() {
               </div>
             </div>
             <p style={{ fontSize: '0.8rem', color: 'var(--muted)', marginTop: 16, lineHeight: 1.6 }}>
-              Note: You will receive a direct confirmation call or SMS from Dr. Abedah's Sono Healthcare staff to confirm the time slot and provide scan preparation instructions (e.g., full bladder for pelvic scans / fasting for whole abdomen).
+              Note: You will receive a direct confirmation call or SMS from Dr. Abedah&#39;s Sono Healthcare staff to confirm the time slot and provide scan preparation instructions (e.g., full bladder for pelvic scans / fasting for whole abdomen).
             </p>
           </div>
         )}
 
-        {/* ── Navigation buttons ── */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 40, gap: 16 }}>
           {step > 1 ? (
             <button onClick={back} className="btn-outline" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <ChevronLeft size={16} /> Back
             </button>
           ) : <div />}
-          {step < 6 ? (
+          {step < 4 ? (
             <button onClick={next} className="btn-primary">
               Continue <ChevronRight size={16} />
             </button>
