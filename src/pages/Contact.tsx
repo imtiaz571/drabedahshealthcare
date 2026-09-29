@@ -176,7 +176,7 @@ export default function Contact() {
                 <div style={{ fontSize: '0.8rem', color: 'var(--orange-dark)', fontWeight: 700, marginTop: 4 }}>Dr. Abedah's Sono Healthcare</div>
               </div>
               <a
-                href="https://maps.google.com/?q=Rikabibazar+Stadium+Market+Sylhet"
+                href="https://www.google.com/maps/search/?api=1&query=Dr.+Abedah%27s+Sono+Healthcare,+43+East+Stadium+Market,+Rikabibazar,+Sylhet,+Bangladesh"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
