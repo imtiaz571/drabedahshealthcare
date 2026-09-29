@@ -104,7 +104,7 @@ function MiniCalendar({ value, onChange }: { value: Date | null; onChange: (d: D
 }
 
 // ── Step indicator ─────────────────────────────────────
-const STEPS = ['Info', 'Service', 'Date & Time', 'Review'] // 4 steps
+const STEPS = ['Info', 'Service', 'Date & Time', 'Review']
 
 function StepBar({ current }: { current: number }) {
   return (
