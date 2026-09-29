@@ -451,7 +451,7 @@ export default function Home() {
               <p style={{ fontFamily: 'Manrope', fontWeight: 600, fontSize: '1rem', opacity: 0.7 }}>43 East Stadium Market (Ground Floor)</p>
               <p style={{ fontSize: '0.85rem', opacity: 0.6 }}>Rikabibazar, Sylhet, Bangladesh</p>
               <a
-                href="https://maps.google.com/?q=Rikabibazar+Stadium+Market+Sylhet"
+                href="https://www.google.com/maps/search/?api=1&query=Dr.+Abedah%27s+Sono+Healthcare,+43+East+Stadium+Market,+Rikabibazar,+Sylhet,+Bangladesh"
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
