@@ -210,6 +210,17 @@ h1, h2, h3, h4, h5, h6 {
   cursor: pointer;
 }
 
+/* Polished responsive defaults for the existing page compositions. */
+@media (max-width: 768px) {
+  body { font-size: 15px; }
+  .hero-container, section > div { max-width: 100%; }
+  .hero-title { letter-spacing: -0.04em !important; }
+  .btn-primary, .btn-outline, .btn-outline-white { min-height: 48px; justify-content: center; }
+  .hero-cta-group > a { flex: 1 1 100%; }
+  .service-card, .testimonial-card { padding: 24px 20px; }
+  .map-placeholder { min-height: 300px !important; height: auto !important; }
+}
+
 .service-card:hover {
   border-color: var(--orange);
   box-shadow: 0 12px 40px rgba(255, 90, 31, 0.12);

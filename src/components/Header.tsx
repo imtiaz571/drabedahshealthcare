@@ -122,7 +122,7 @@ export default function Header() {
             }}
             className="mobile-hamburger"
           >
-            <Menu size={24} />
+            {menuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </header>
