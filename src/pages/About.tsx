@@ -119,7 +119,7 @@ export default function About() {
         <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center' }}>
           <FadeSection>
             <div style={{ position: 'relative' }}>
-              <div style={{
+              <div className="quote-bubble" style={{
                 position: 'absolute', bottom: -24, right: -24,
                 width: 200, height: 200,
                 background: 'var(--orange)',
@@ -315,6 +315,16 @@ export default function About() {
       </section>
 
       <style>{`
+        .quote-bubble::after {
+          content: '';
+          position: absolute;
+          left: 26px;
+          bottom: -16px;
+          width: 0;
+          height: 0;
+          border-top: 20px solid var(--orange);
+          border-right: 18px solid transparent;
+        }
         .clinic-gallery-grid {
           display: grid;
           grid-template-columns: 1.35fr 1fr 1fr;
