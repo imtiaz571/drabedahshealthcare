@@ -6,6 +6,7 @@ import consultationImage from '../assets/about-consultation.jpg'
 import checkupImage from '../assets/about-checkup.jpg'
 import bloodPressureImage from '../assets/about-blood-pressure.jpg'
 import patientCareImage from '../assets/about-patient-care.jpg'
+import bloodPressurePatientImage from '../assets/about-blood-pressure-patient.jpg'
 
 const DOCTOR_IMG = 'https://images.unsplash.com/photo-1789062368232-8f630fcbef16?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
 
@@ -15,6 +16,7 @@ const clinicGallery = [
   { src: checkupImage, alt: 'Dr. Abedah checking a patient at the clinic' },
   { src: bloodPressureImage, alt: 'Dr. Abedah recording a patient examination' },
   { src: patientCareImage, alt: 'Dr. Abedah providing patient care' },
+  { src: bloodPressurePatientImage, alt: 'Dr. Abedah checking a patient’s blood pressure' },
 ]
 
 function FadeSection({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
