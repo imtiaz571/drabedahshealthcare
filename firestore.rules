@@ -6,7 +6,8 @@ service cloud.firestore {
         && request.resource.data.name is string
         && request.resource.data.phone is string
         && request.resource.data.date is string;
-      allow read, update, delete: if request.auth != null;
+      allow read, update, delete: if request.auth != null
+        && request.auth.token.email == 'abedahbegum@gmail.com';
     }
   }
 }

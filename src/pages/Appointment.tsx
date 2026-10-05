@@ -15,11 +15,14 @@ export default function Appointment() {
     setSubmitting(true)
     setError('')
     try {
-      await createAppointment(form)
+      await Promise.race([
+        createAppointment(form),
+        new Promise((_, reject) => setTimeout(() => reject(new Error('Firebase request timed out')), 10000)),
+      ])
       setSubmitted(true)
     } catch (err) {
       console.error('Appointment submission failed:', err)
-      setError('Booking could not be submitted. Please check your connection or call the clinic.')
+      setError('Booking could not be submitted. Please check Firebase setup or call the clinic.')
     } finally {
       setSubmitting(false)
     }
