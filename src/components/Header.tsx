@@ -39,14 +39,7 @@ export default function Header() {
       >
         <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 32px', display: 'flex', alignItems: 'center', height: 72 }}>
           {/* Logo */}
-          <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 12, marginRight: 'auto' }}>
-            <div style={{
-              width: 42, height: 42, background: 'var(--orange)', borderRadius: 10,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              flexShrink: 0, boxShadow: '0 4px 14px rgba(255, 90, 31, 0.3)',
-            }}>
-              <span style={{ color: '#fff', fontFamily: 'Manrope', fontWeight: 800, fontSize: '1.2rem' }}>A</span>
-            </div>
+          <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', marginRight: 'auto' }}>
             <div>
               <div style={{ fontFamily: 'Manrope', fontWeight: 800, fontSize: '1.05rem', color: 'var(--black)', lineHeight: 1.15 }}>
                 Dr. Abedah's
