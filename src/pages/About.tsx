@@ -318,12 +318,13 @@ export default function About() {
         .quote-bubble::after {
           content: '';
           position: absolute;
-          left: 26px;
-          bottom: -16px;
+          left: -18px;
+          top: 34px;
           width: 0;
           height: 0;
-          border-top: 20px solid var(--orange);
-          border-right: 18px solid transparent;
+          border-right: 20px solid var(--orange);
+          border-top: 13px solid transparent;
+          border-bottom: 13px solid transparent;
         }
         .clinic-gallery-grid {
           display: grid;
