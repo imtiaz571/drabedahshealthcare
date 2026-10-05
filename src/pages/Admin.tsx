@@ -108,6 +108,16 @@ function Dashboard({ user }: { user: User }) {
     }
   }
 
+  async function removeMessage(id: string) {
+    if (!window.confirm('Delete this inquiry message?')) return
+    try {
+      await deleteDoc(doc(db, 'messages', id))
+      setMessages(current => current.filter(message => message.id !== id))
+    } catch {
+      setError('Could not delete this inquiry message. Check your Firebase rules.')
+    }
+  }
+
   async function changeStatus(id: string, status: Appointment['status']) {
     if (!status) return
     try {
@@ -175,7 +185,7 @@ function Dashboard({ user }: { user: User }) {
 
         <section style={{ background: '#fff', border: '1px solid var(--border)', borderRadius: 12, overflow: 'hidden', marginTop: 24 }}>
           <div style={{ padding: '20px 22px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: 10 }}><Mail size={18} color="var(--orange)" /><h2 style={{ fontSize: '1.25rem' }}>Inquiry messages ({messages.length})</h2></div>
-          {messages.length === 0 ? <p style={{ padding: 22, color: 'var(--muted)' }}>No inquiry messages yet.</p> : <div>{messages.map(message => <article key={message.id} style={{ padding: '20px 22px', borderBottom: '1px solid var(--border)' }}><div style={{ display: 'flex', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap', marginBottom: 8 }}><strong>{message.name}</strong><span style={{ color: 'var(--muted)', fontSize: '.85rem' }}>{message.email} · {message.phone}</span></div><div style={{ color: 'var(--orange-dark)', fontWeight: 700, marginBottom: 6 }}>{message.subject}</div><p style={{ margin: 0, lineHeight: 1.6, color: 'var(--text)' }}>{message.message}</p></article>)}</div>}
+          {messages.length === 0 ? <p style={{ padding: 22, color: 'var(--muted)' }}>No inquiry messages yet.</p> : <div>{messages.map(message => <article key={message.id} style={{ padding: '20px 22px', borderBottom: '1px solid var(--border)' }}><div style={{ display: 'flex', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap', marginBottom: 8 }}><strong>{message.name}</strong><span style={{ color: 'var(--muted)', fontSize: '.85rem' }}>{message.email} · {message.phone}</span></div><div style={{ color: 'var(--orange-dark)', fontWeight: 700, marginBottom: 6 }}>{message.subject}</div><p style={{ margin: 0, lineHeight: 1.6, color: 'var(--text)' }}>{message.message}</p><button onClick={() => removeMessage(message.id)} aria-label={`Delete inquiry from ${message.name}`} style={{ marginTop: 14, display: 'inline-flex', alignItems: 'center', gap: 6, border: 0, background: 'transparent', color: '#c53030', cursor: 'pointer', padding: 0, fontWeight: 700 }}><Trash2 size={16} /> Delete message</button></article>)}</div>}
         </section>
       </div>
     </main>
