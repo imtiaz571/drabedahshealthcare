@@ -1,4 +1,4 @@
-import { HashRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 import Header from './components/Header'
 import Footer from './components/Footer'
@@ -16,17 +16,19 @@ function ScrollToTop() {
 }
 
 export default function App() {
-  // Support both the hash URL and a direct /admin URL when the host rewrites to index.html.
-  if (window.location.pathname === '/admin') return <Admin />
+  // Keep existing shared hash links working after switching to clean URLs.
+  if (window.location.hash.startsWith('#/')) {
+    window.history.replaceState(null, '', window.location.hash.slice(1))
+  }
 
   return (
-    <HashRouter>
+    <BrowserRouter>
       <ScrollToTop />
       <Routes>
         <Route path="/admin" element={<Admin />} />
         <Route path="*" element={<PublicSite />} />
       </Routes>
-    </HashRouter>
+    </BrowserRouter>
   )
 }
 
