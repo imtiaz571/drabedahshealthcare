@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { MapPin, Phone, Mail, Clock, Globe, ArrowRight, Send, CheckCircle, Award } from 'lucide-react'
+import { createContactMessage } from '../lib/messages'
 
 const FbIcon = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
 const GlobeIcon = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
@@ -47,6 +48,8 @@ export default function Contact() {
   const [form, setForm] = useState<ContactForm>({ name: '', email: '', phone: '', subject: '', message: '' })
   const [errors, setErrors] = useState<Errs>({})
   const [sent, setSent] = useState(false)
+  const [sending, setSending] = useState(false)
+  const [submitError, setSubmitError] = useState('')
 
   const update = (key: keyof ContactForm, val: string) => {
     setForm(f => ({ ...f, [key]: val }))
@@ -63,11 +66,18 @@ export default function Contact() {
     return e
   }
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault()
     const errs = validate()
     if (Object.keys(errs).length) { setErrors(errs); return }
-    setSent(true)
+    setSending(true)
+    setSubmitError('')
+    try {
+      await createContactMessage(form)
+      setSent(true)
+    } catch {
+      setSubmitError('Your message could not be sent. Please call the clinic directly.')
+    } finally { setSending(false) }
   }
 
   return (
@@ -262,8 +272,9 @@ export default function Contact() {
                   />
                   {errors.message && <div className="error-msg">{errors.message}</div>}
                 </div>
-                <button type="submit" className="btn-primary" style={{ width: '100%', justifyContent: 'center', padding: '16px', fontSize: '1rem' }}>
-                  Send Message <Send size={16} />
+                {submitError && <p role="alert" style={{ color: '#c53030', marginBottom: 14 }}>{submitError}</p>}
+                <button type="submit" disabled={sending} className="btn-primary" style={{ width: '100%', justifyContent: 'center', padding: '16px', fontSize: '1rem', opacity: sending ? .7 : 1 }}>
+                  {sending ? 'Sending…' : 'Send Message'} {!sending && <Send size={16} />}
                 </button>
               </form>
             </FadeSection>

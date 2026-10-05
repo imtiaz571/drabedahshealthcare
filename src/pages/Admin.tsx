@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { signInWithEmailAndPassword, onAuthStateChanged, signOut, type User } from 'firebase/auth'
 import { collection, deleteDoc, doc, getDocs, updateDoc } from 'firebase/firestore'
-import { LogOut, LockKeyhole, CalendarDays, Users, RefreshCw, Trash2, Search } from 'lucide-react'
+import { LogOut, LockKeyhole, CalendarDays, Users, RefreshCw, Trash2, Search, Mail } from 'lucide-react'
 import { auth, db } from '../lib/firebase'
 
 const ADMIN_EMAIL = 'abedahbegum@gmail.com'
@@ -16,6 +16,7 @@ type Appointment = {
   status?: 'new' | 'contacted' | 'confirmed' | 'completed' | 'cancelled'
   createdAt?: { seconds?: number }
 }
+type ContactMessage = { id: string; name: string; email: string; phone: string; subject: string; message: string; createdAt?: { seconds?: number } }
 const statuses = ['new', 'contacted', 'confirmed', 'completed', 'cancelled'] as const
 
 function Login() {
@@ -69,6 +70,7 @@ function Dashboard({ user }: { user: User }) {
   const [search, setSearch] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
   const [selectedDate, setSelectedDate] = useState('')
+  const [messages, setMessages] = useState<ContactMessage[]>([])
 
   async function loadAppointments() {
     setLoading(true)
@@ -78,6 +80,10 @@ function Dashboard({ user }: { user: User }) {
       const records = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }) as Appointment)
       records.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0))
       setAppointments(records)
+      const messageSnapshot = await getDocs(collection(db, 'messages'))
+      const inquiries = messageSnapshot.docs.map(item => ({ id: item.id, ...item.data() }) as ContactMessage)
+      inquiries.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0))
+      setMessages(inquiries)
     } catch {
       setError('Could not load appointments. Check your Firebase connection and rules.')
     } finally {
@@ -160,6 +166,11 @@ function Dashboard({ user }: { user: User }) {
           {loading ? <p style={{ padding: 22, color: 'var(--muted)' }}>Loading appointments…</p> : appointments.length === 0 ? <p style={{ padding: 22, color: 'var(--muted)' }}>No appointments yet.</p> : visibleAppointments.length === 0 ? <p style={{ padding: 22, color: 'var(--muted)' }}>No appointments match these filters.</p> : !dayAppointments.length ? <p style={{ padding: 22, color: 'var(--muted)' }}>No appointments for {formatDate(activeDate)}.</p> : (
             <div style={{ overflowX: 'auto' }}><table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 760 }}><thead><tr style={{ textAlign: 'left', background: 'var(--off-white)' }}>{['Patient', 'Phone', 'Requested date', 'Status', 'Booking ID', ''].map(label => <th key={label} style={{ padding: '13px 18px', fontSize: '.78rem', textTransform: 'uppercase', letterSpacing: '.04em', color: 'var(--muted)' }}>{label}</th>)}</tr></thead><tbody><tr><th colSpan={6} style={{ padding: '14px 18px', textAlign: 'left', background: 'var(--orange-light)', color: 'var(--orange-dark)', fontFamily: 'Manrope', fontSize: '.95rem' }}>{formatDate(activeDate)} <span style={{ fontWeight: 500, color: 'var(--muted)', fontFamily: 'Inter', fontSize: '.8rem' }}>({dayAppointments.length} {dayAppointments.length === 1 ? 'appointment' : 'appointments'})</span></th></tr>{dayAppointments.map(item => <tr key={item.id} style={{ borderTop: '1px solid var(--border)' }}><td style={{ padding: '16px 18px', fontWeight: 700 }}>{item.name}</td><td style={{ padding: '16px 18px' }}><a href={`tel:${item.phone}`} style={{ color: 'inherit' }}>{item.phone}</a></td><td style={{ padding: '16px 18px' }}>{item.date}</td><td style={{ padding: '16px 18px' }}><select aria-label={`Status for ${item.name}`} value={item.status || 'new'} onChange={e => changeStatus(item.id, e.target.value as Appointment['status'])} style={{ border: '1px solid var(--border)', borderRadius: 6, padding: '7px 8px', textTransform: 'capitalize' }}>{statuses.map(status => <option key={status} value={status}>{status}</option>)}</select></td><td style={{ padding: '16px 18px', color: 'var(--muted)', fontSize: '.8rem' }}>{item.id.slice(0, 8)}</td><td style={{ padding: '16px 18px', textAlign: 'right' }}><button onClick={() => removeAppointment(item.id)} aria-label={`Delete appointment for ${item.name}`} style={{ border: 0, background: 'transparent', color: '#c53030', cursor: 'pointer', padding: 6 }}><Trash2 size={17} /></button></td></tr>)}</tbody></table></div>
           )}
+        </section>
+
+        <section style={{ background: '#fff', border: '1px solid var(--border)', borderRadius: 12, overflow: 'hidden', marginTop: 24 }}>
+          <div style={{ padding: '20px 22px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: 10 }}><Mail size={18} color="var(--orange)" /><h2 style={{ fontSize: '1.25rem' }}>Inquiry messages ({messages.length})</h2></div>
+          {messages.length === 0 ? <p style={{ padding: 22, color: 'var(--muted)' }}>No inquiry messages yet.</p> : <div>{messages.map(message => <article key={message.id} style={{ padding: '20px 22px', borderBottom: '1px solid var(--border)' }}><div style={{ display: 'flex', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap', marginBottom: 8 }}><strong>{message.name}</strong><span style={{ color: 'var(--muted)', fontSize: '.85rem' }}>{message.email} · {message.phone}</span></div><div style={{ color: 'var(--orange-dark)', fontWeight: 700, marginBottom: 6 }}>{message.subject}</div><p style={{ margin: 0, lineHeight: 1.6, color: 'var(--text)' }}>{message.message}</p></article>)}</div>}
         </section>
       </div>
     </main>
