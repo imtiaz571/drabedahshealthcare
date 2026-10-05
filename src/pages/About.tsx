@@ -191,7 +191,7 @@ export default function About() {
           <div className="clinic-gallery-grid">
             {clinicGallery.map(({ src, alt }, index) => (
               <FadeSection key={src} delay={index * 70}>
-                <img src={src} alt={alt} loading="lazy" style={{ width: '100%', height: index === 0 ? 420 : 260, objectFit: 'cover', borderRadius: 12, display: 'block', boxShadow: '0 12px 32px rgba(0,0,0,.1)' }} />
+                <img src={src} alt={alt} loading="lazy" style={{ width: '100%', aspectRatio: '4 / 3', objectFit: 'cover', borderRadius: 12, display: 'block', boxShadow: '0 12px 32px rgba(0,0,0,.1)' }} />
               </FadeSection>
             ))}
           </div>
@@ -331,7 +331,6 @@ export default function About() {
           grid-template-columns: 1.35fr 1fr 1fr;
           gap: 20px;
         }
-        .clinic-gallery-grid > div:first-child { grid-row: span 2; }
         @media (max-width: 768px) {
           section > div[style*="grid-template-columns: 1fr 1fr"] {
             grid-template-columns: 1fr !important;
@@ -339,7 +338,6 @@ export default function About() {
           }
           .timeline-item { padding-left: 40px; }
           .clinic-gallery-grid { grid-template-columns: 1fr !important; }
-          .clinic-gallery-grid img { height: 280px !important; }
         }
       `}</style>
     </div>
