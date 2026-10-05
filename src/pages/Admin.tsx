@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { signInWithEmailAndPassword, onAuthStateChanged, signOut, type User } from 'firebase/auth'
-import { collection, deleteDoc, doc, getDocs, orderBy, query, updateDoc } from 'firebase/firestore'
+import { collection, deleteDoc, doc, getDocs, updateDoc } from 'firebase/firestore'
 import { LogOut, LockKeyhole, CalendarDays, Users, RefreshCw, Trash2, Search } from 'lucide-react'
 import { auth, db } from '../lib/firebase'
 
@@ -73,8 +73,10 @@ function Dashboard({ user }: { user: User }) {
     setLoading(true)
     setError('')
     try {
-      const snapshot = await getDocs(query(collection(db, 'appointments'), orderBy('createdAt', 'desc')))
-      setAppointments(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }) as Appointment))
+      const snapshot = await getDocs(collection(db, 'appointments'))
+      const records = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }) as Appointment)
+      records.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0))
+      setAppointments(records)
     } catch {
       setError('Could not load appointments. Check your Firebase connection and rules.')
     } finally {
