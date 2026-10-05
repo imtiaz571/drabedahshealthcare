@@ -167,28 +167,8 @@ export default function Contact() {
           </FadeSection>
 
           <FadeSection delay={100}>
-            {/* Map placeholder */}
             <div className="map-placeholder" style={{ height: 360, marginBottom: 24 }}>
-              <MapPin size={48} style={{ opacity: 0.35 }} />
-              <div style={{ textAlign: 'center' }}>
-                <p style={{ fontFamily: 'Manrope', fontWeight: 700, fontSize: '1.05rem', opacity: 0.85, color: 'var(--black)', margin: 0 }}>43 East Stadium Market (Ground Floor)</p>
-                <p style={{ fontSize: '0.85rem', opacity: 0.7, color: 'var(--black)', marginTop: 4 }}>Rikabibazar, Sylhet, Bangladesh</p>
-                <div style={{ fontSize: '0.8rem', color: 'var(--orange-dark)', fontWeight: 700, marginTop: 4 }}>Dr. Abedah's Sono Healthcare</div>
-              </div>
-              <a
-                href="https://www.google.com/maps/search/?api=1&query=Dr.+Abedah%27s+Sono+Healthcare,+43+East+Stadium+Market,+Rikabibazar,+Sylhet,+Bangladesh"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: 'inline-flex', alignItems: 'center', gap: 6,
-                  background: 'var(--orange)', color: '#fff',
-                  padding: '10px 20px', borderRadius: 6,
-                  fontFamily: 'Manrope', fontWeight: 700, fontSize: '0.875rem',
-                  textDecoration: 'none', opacity: 0.95, marginTop: 8,
-                }}
-              >
-                Open in Google Maps <ArrowRight size={14} />
-              </a>
+              <iframe title="Dr. Abedah's Sono Healthcare location" src="https://www.google.com/maps?q=Dr.+Abedah%27s+Sono+Healthcare,+43+East+Stadium+Market,+Rikabibazar,+Sylhet,+Bangladesh&output=embed" style={{ width: '100%', height: '100%', border: 0, borderRadius: 12 }} loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
             </div>
 
             {/* Opening hours */}

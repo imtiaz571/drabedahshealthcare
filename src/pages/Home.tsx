@@ -448,23 +448,7 @@ export default function Home() {
           </FadeSection>
           <FadeSection delay={150}>
             <div className="map-placeholder" style={{ height: 380 }}>
-              <MapPin size={40} style={{ opacity: 0.4 }} />
-              <p style={{ fontFamily: 'Manrope', fontWeight: 600, fontSize: '1rem', opacity: 0.7 }}>43 East Stadium Market (Ground Floor)</p>
-              <p style={{ fontSize: '0.85rem', opacity: 0.6 }}>Rikabibazar, Sylhet, Bangladesh</p>
-              <a
-                href="https://www.google.com/maps/search/?api=1&query=Dr.+Abedah%27s+Sono+Healthcare,+43+East+Stadium+Market,+Rikabibazar,+Sylhet,+Bangladesh"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: 'inline-flex', alignItems: 'center', gap: 6,
-                  background: 'var(--orange)', color: '#fff',
-                  padding: '10px 20px', borderRadius: 6,
-                  fontFamily: 'Manrope', fontWeight: 700, fontSize: '0.875rem',
-                  textDecoration: 'none', marginTop: 12,
-                }}
-              >
-                Open in Google Maps <ArrowRight size={14} />
-              </a>
+              <iframe title="Dr. Abedah's Sono Healthcare location" src="https://www.google.com/maps?q=Dr.+Abedah%27s+Sono+Healthcare,+43+East+Stadium+Market,+Rikabibazar,+Sylhet,+Bangladesh&output=embed" style={{ width: '100%', height: '100%', border: 0, borderRadius: 12 }} loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
             </div>
           </FadeSection>
         </div>
