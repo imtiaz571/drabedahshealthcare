@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { signInWithEmailAndPassword, onAuthStateChanged, signOut, type User } from 'firebase/auth'
-import { collection, deleteDoc, doc, getDocs, orderBy, query } from 'firebase/firestore'
-import { LogOut, LockKeyhole, CalendarDays, Users, RefreshCw, Trash2 } from 'lucide-react'
+import { collection, deleteDoc, doc, getDocs, orderBy, query, updateDoc } from 'firebase/firestore'
+import { LogOut, LockKeyhole, CalendarDays, Users, RefreshCw, Trash2, Search } from 'lucide-react'
 import { auth, db } from '../lib/firebase'
 
 const ADMIN_EMAIL = 'abedahbegum@gmail.com'
@@ -11,12 +11,18 @@ type Appointment = {
   name: string
   phone: string
   date: string
+  service?: string
+  time?: string
+  status?: 'new' | 'contacted' | 'confirmed' | 'completed' | 'cancelled'
   createdAt?: { seconds?: number }
 }
+const statuses = ['new', 'contacted', 'confirmed', 'completed', 'cancelled'] as const
 
 function Login() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
+  const [search, setSearch] = useState('')
+  const [statusFilter, setStatusFilter] = useState('all')
   const [busy, setBusy] = useState(false)
 
   async function submit(event: React.FormEvent) {
@@ -88,6 +94,33 @@ function Dashboard({ user }: { user: User }) {
     }
   }
 
+  async function changeStatus(id: string, status: Appointment['status']) {
+    if (!status) return
+    try {
+      await updateDoc(doc(db, 'appointments', id), { status })
+      setAppointments(current => current.map(item => item.id === id ? { ...item, status } : item))
+    } catch { setError('Could not update appointment status.') }
+  }
+
+  function exportCsv() {
+    const rows = visibleAppointments.map(item => [item.name, item.phone, item.service || '', item.date, item.time || '', item.status || 'new', item.id])
+    const csv = [['Patient', 'Phone', 'Service', 'Date', 'Time', 'Status', 'Booking ID'], ...rows]
+      .map(row => row.map(value => `"${String(value).replaceAll('"', '""')}"`).join(','))
+      .join('\n')
+    const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }))
+    const link = document.createElement('a')
+    link.href = url
+    link.download = 'appointments.csv'
+    link.click()
+    URL.revokeObjectURL(url)
+  }
+
+  const visibleAppointments = appointments.filter(item => {
+    const term = search.toLowerCase().trim()
+    const matchesSearch = !term || [item.name, item.phone, item.service, item.id].some(value => value?.toLowerCase().includes(term))
+    return matchesSearch && (statusFilter === 'all' || (item.status || 'new') === statusFilter)
+  })
+
   return (
     <main style={{ minHeight: '100vh', background: 'var(--off-white)', padding: '40px 24px' }}>
       <div style={{ maxWidth: 1120, margin: '0 auto' }}>
@@ -109,10 +142,10 @@ function Dashboard({ user }: { user: User }) {
         </div>
 
         <section style={{ background: '#fff', border: '1px solid var(--border)', borderRadius: 12, overflow: 'hidden' }}>
-          <div style={{ padding: '20px 22px', borderBottom: '1px solid var(--border)' }}><h2 style={{ fontSize: '1.25rem' }}>Recent requests</h2></div>
+          <div style={{ padding: '20px 22px', borderBottom: '1px solid var(--border)', display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' }}><h2 style={{ fontSize: '1.25rem' }}>Appointment requests</h2><div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}><label style={{ display: 'flex', alignItems: 'center', gap: 6, border: '1px solid var(--border)', borderRadius: 6, padding: '0 10px' }}><Search size={15} color="var(--muted)" /><input aria-label="Search appointments" value={search} onChange={e => setSearch(e.target.value)} placeholder="Search" style={{ border: 0, outline: 0, padding: '9px 0', width: 150 }} /></label><select aria-label="Filter by status" value={statusFilter} onChange={e => setStatusFilter(e.target.value)} style={{ border: '1px solid var(--border)', borderRadius: 6, padding: '9px 10px' }}><option value="all">All statuses</option>{statuses.map(status => <option key={status} value={status}>{status[0].toUpperCase() + status.slice(1)}</option>)}</select><button className="btn-outline" onClick={exportCsv} disabled={!visibleAppointments.length} style={{ padding: '9px 14px', fontSize: '.85rem' }}>Export CSV</button></div></div>
           {error && <p role="alert" style={{ color: '#c53030', padding: 22 }}>{error}</p>}
-          {loading ? <p style={{ padding: 22, color: 'var(--muted)' }}>Loading appointments…</p> : appointments.length === 0 ? <p style={{ padding: 22, color: 'var(--muted)' }}>No appointments yet.</p> : (
-            <div style={{ overflowX: 'auto' }}><table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 700 }}><thead><tr style={{ textAlign: 'left', background: 'var(--off-white)' }}>{['Patient', 'Phone', 'Requested date', 'Booking ID', ''].map(label => <th key={label} style={{ padding: '13px 18px', fontSize: '.78rem', textTransform: 'uppercase', letterSpacing: '.04em', color: 'var(--muted)' }}>{label}</th>)}</tr></thead><tbody>{appointments.map(item => <tr key={item.id} style={{ borderTop: '1px solid var(--border)' }}><td style={{ padding: '16px 18px', fontWeight: 700 }}>{item.name}</td><td style={{ padding: '16px 18px' }}>{item.phone}</td><td style={{ padding: '16px 18px' }}>{item.date}</td><td style={{ padding: '16px 18px', color: 'var(--muted)', fontSize: '.8rem' }}>{item.id.slice(0, 8)}</td><td style={{ padding: '16px 18px', textAlign: 'right' }}><button onClick={() => removeAppointment(item.id)} aria-label={`Delete appointment for ${item.name}`} style={{ border: 0, background: 'transparent', color: '#c53030', cursor: 'pointer', padding: 6 }}><Trash2 size={17} /></button></td></tr>)}</tbody></table></div>
+          {loading ? <p style={{ padding: 22, color: 'var(--muted)' }}>Loading appointments…</p> : appointments.length === 0 ? <p style={{ padding: 22, color: 'var(--muted)' }}>No appointments yet.</p> : visibleAppointments.length === 0 ? <p style={{ padding: 22, color: 'var(--muted)' }}>No appointments match these filters.</p> : (
+            <div style={{ overflowX: 'auto' }}><table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 980 }}><thead><tr style={{ textAlign: 'left', background: 'var(--off-white)' }}>{['Patient', 'Phone', 'Service', 'Preferred date', 'Time', 'Status', 'Booking ID', ''].map(label => <th key={label} style={{ padding: '13px 18px', fontSize: '.78rem', textTransform: 'uppercase', letterSpacing: '.04em', color: 'var(--muted)' }}>{label}</th>)}</tr></thead><tbody>{visibleAppointments.map(item => <tr key={item.id} style={{ borderTop: '1px solid var(--border)' }}><td style={{ padding: '16px 18px', fontWeight: 700 }}>{item.name}</td><td style={{ padding: '16px 18px' }}><a href={`tel:${item.phone}`} style={{ color: 'inherit' }}>{item.phone}</a></td><td style={{ padding: '16px 18px', minWidth: 180 }}>{item.service || '—'}</td><td style={{ padding: '16px 18px' }}>{item.date}</td><td style={{ padding: '16px 18px' }}>{item.time || '—'}</td><td style={{ padding: '16px 18px' }}><select aria-label={`Status for ${item.name}`} value={item.status || 'new'} onChange={e => changeStatus(item.id, e.target.value as Appointment['status'])} style={{ border: '1px solid var(--border)', borderRadius: 6, padding: '7px 8px', textTransform: 'capitalize' }}>{statuses.map(status => <option key={status} value={status}>{status}</option>)}</select></td><td style={{ padding: '16px 18px', color: 'var(--muted)', fontSize: '.8rem' }}>{item.id.slice(0, 8)}</td><td style={{ padding: '16px 18px', textAlign: 'right' }}><button onClick={() => removeAppointment(item.id)} aria-label={`Delete appointment for ${item.name}`} style={{ border: 0, background: 'transparent', color: '#c53030', cursor: 'pointer', padding: 6 }}><Trash2 size={17} /></button></td></tr>)}</tbody></table></div>
           )}
         </section>
       </div>

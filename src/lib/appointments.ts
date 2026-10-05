@@ -5,6 +5,8 @@ export interface AppointmentPayload {
   name: string
   phone: string
   date: string
+  service: string
+  time: string
 }
 
 export async function createAppointment(payload: AppointmentPayload) {
@@ -12,6 +14,9 @@ export async function createAppointment(payload: AppointmentPayload) {
     name: payload.name,
     phone: payload.phone,
     date: payload.date,
+    service: payload.service,
+    time: payload.time,
+    status: 'new',
     createdAt: serverTimestamp(),
   })
 }
