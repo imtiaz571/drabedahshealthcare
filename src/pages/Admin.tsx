@@ -68,6 +68,7 @@ function Dashboard({ user }: { user: User }) {
   const [error, setError] = useState('')
   const [search, setSearch] = useState('')
   const [statusFilter, setStatusFilter] = useState('all')
+  const [selectedDate, setSelectedDate] = useState('')
 
   async function loadAppointments() {
     setLoading(true)
@@ -104,15 +105,15 @@ function Dashboard({ user }: { user: User }) {
     } catch { setError('Could not update appointment status.') }
   }
 
-  function exportCsv() {
-    const rows = visibleAppointments.map(item => [item.name, item.phone, item.date, item.status || 'new', item.id])
+  function exportCsv(items: Appointment[], filename: string) {
+    const rows = items.map(item => [item.name, item.phone, item.date, item.status || 'new', item.id])
     const csv = [['Patient', 'Phone', 'Date', 'Status', 'Booking ID'], ...rows]
       .map(row => row.map(value => `"${String(value).replaceAll('"', '""')}"`).join(','))
       .join('\n')
     const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }))
     const link = document.createElement('a')
     link.href = url
-    link.download = 'appointments.csv'
+    link.download = filename
     link.click()
     URL.revokeObjectURL(url)
   }
@@ -122,10 +123,14 @@ function Dashboard({ user }: { user: User }) {
     const matchesSearch = !term || [item.name, item.phone, item.service, item.id].some(value => value?.toLowerCase().includes(term))
     return matchesSearch && (statusFilter === 'all' || (item.status || 'new') === statusFilter)
   })
-  const groupedAppointments = Object.entries(visibleAppointments.reduce<Record<string, Appointment[]>>((groups, item) => {
-    ;(groups[item.date] ||= []).push(item)
-    return groups
-  }, {})).sort(([a], [b]) => a.localeCompare(b))
+  const availableDates = [...new Set(visibleAppointments.map(item => item.date))].sort()
+  const activeDate = selectedDate || availableDates[0] || ''
+  const dayAppointments = visibleAppointments.filter(item => item.date === activeDate)
+  const dateIndex = availableDates.indexOf(activeDate)
+  const goToDate = (offset: number) => {
+    const next = availableDates[dateIndex + offset]
+    if (next) setSelectedDate(next)
+  }
   const formatDate = (date: string) => new Date(`${date}T00:00:00`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
 
   return (
@@ -149,10 +154,11 @@ function Dashboard({ user }: { user: User }) {
         </div>
 
         <section style={{ background: '#fff', border: '1px solid var(--border)', borderRadius: 12, overflow: 'hidden' }}>
-          <div style={{ padding: '20px 22px', borderBottom: '1px solid var(--border)', display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' }}><h2 style={{ fontSize: '1.25rem' }}>Appointment requests</h2><div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}><label style={{ display: 'flex', alignItems: 'center', gap: 6, border: '1px solid var(--border)', borderRadius: 6, padding: '0 10px' }}><Search size={15} color="var(--muted)" /><input aria-label="Search appointments" value={search} onChange={e => setSearch(e.target.value)} placeholder="Search" style={{ border: 0, outline: 0, padding: '9px 0', width: 150 }} /></label><select aria-label="Filter by status" value={statusFilter} onChange={e => setStatusFilter(e.target.value)} style={{ border: '1px solid var(--border)', borderRadius: 6, padding: '9px 10px' }}><option value="all">All statuses</option>{statuses.map(status => <option key={status} value={status}>{status[0].toUpperCase() + status.slice(1)}</option>)}</select><button className="btn-outline" onClick={exportCsv} disabled={!visibleAppointments.length} style={{ padding: '9px 14px', fontSize: '.85rem' }}>Export CSV</button></div></div>
+          <div style={{ padding: '20px 22px', borderBottom: '1px solid var(--border)', display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' }}><h2 style={{ fontSize: '1.25rem' }}>Appointment requests</h2><div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}><label style={{ display: 'flex', alignItems: 'center', gap: 6, border: '1px solid var(--border)', borderRadius: 6, padding: '0 10px' }}><Search size={15} color="var(--muted)" /><input aria-label="Search appointments" value={search} onChange={e => setSearch(e.target.value)} placeholder="Search" style={{ border: 0, outline: 0, padding: '9px 0', width: 150 }} /></label><select aria-label="Filter by status" value={statusFilter} onChange={e => setStatusFilter(e.target.value)} style={{ border: '1px solid var(--border)', borderRadius: 6, padding: '9px 10px' }}><option value="all">All statuses</option>{statuses.map(status => <option key={status} value={status}>{status[0].toUpperCase() + status.slice(1)}</option>)}</select><button className="btn-outline" onClick={() => exportCsv(dayAppointments, `appointments-${activeDate || 'selected-day'}.csv`)} disabled={!dayAppointments.length} style={{ padding: '9px 14px', fontSize: '.85rem' }}>Export this day</button><button className="btn-outline" onClick={() => exportCsv(visibleAppointments, 'appointments-all.csv')} disabled={!visibleAppointments.length} style={{ padding: '9px 14px', fontSize: '.85rem' }}>Export all</button></div></div>
+          <div style={{ padding: '18px 22px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}><div style={{ display: 'flex', alignItems: 'center', gap: 8 }}><button className="btn-outline" onClick={() => goToDate(-1)} disabled={dateIndex <= 0} style={{ padding: '8px 12px' }}>← Previous</button><button className="btn-outline" onClick={() => goToDate(1)} disabled={dateIndex < 0 || dateIndex >= availableDates.length - 1} style={{ padding: '8px 12px' }}>Next →</button></div><label style={{ display: 'flex', alignItems: 'center', gap: 8, fontWeight: 700 }}>Jump to date <input aria-label="Choose appointment date" type="date" value={activeDate} onChange={e => setSelectedDate(e.target.value)} style={{ border: '1px solid var(--border)', borderRadius: 6, padding: '8px 10px' }} /></label></div>
           {error && <p role="alert" style={{ color: '#c53030', padding: 22 }}>{error}</p>}
-          {loading ? <p style={{ padding: 22, color: 'var(--muted)' }}>Loading appointments…</p> : appointments.length === 0 ? <p style={{ padding: 22, color: 'var(--muted)' }}>No appointments yet.</p> : visibleAppointments.length === 0 ? <p style={{ padding: 22, color: 'var(--muted)' }}>No appointments match these filters.</p> : (
-            <div style={{ overflowX: 'auto' }}><table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 760 }}><thead><tr style={{ textAlign: 'left', background: 'var(--off-white)' }}>{['Patient', 'Phone', 'Requested date', 'Status', 'Booking ID', ''].map(label => <th key={label} style={{ padding: '13px 18px', fontSize: '.78rem', textTransform: 'uppercase', letterSpacing: '.04em', color: 'var(--muted)' }}>{label}</th>)}</tr></thead>{groupedAppointments.map(([date, items]) => <tbody key={date}><tr><th colSpan={6} style={{ padding: '14px 18px', textAlign: 'left', background: 'var(--orange-light)', color: 'var(--orange-dark)', fontFamily: 'Manrope', fontSize: '.95rem' }}>{formatDate(date)} <span style={{ fontWeight: 500, color: 'var(--muted)', fontFamily: 'Inter', fontSize: '.8rem' }}>({items.length} {items.length === 1 ? 'appointment' : 'appointments'})</span></th></tr>{items.map(item => <tr key={item.id} style={{ borderTop: '1px solid var(--border)' }}><td style={{ padding: '16px 18px', fontWeight: 700 }}>{item.name}</td><td style={{ padding: '16px 18px' }}><a href={`tel:${item.phone}`} style={{ color: 'inherit' }}>{item.phone}</a></td><td style={{ padding: '16px 18px' }}>{item.date}</td><td style={{ padding: '16px 18px' }}><select aria-label={`Status for ${item.name}`} value={item.status || 'new'} onChange={e => changeStatus(item.id, e.target.value as Appointment['status'])} style={{ border: '1px solid var(--border)', borderRadius: 6, padding: '7px 8px', textTransform: 'capitalize' }}>{statuses.map(status => <option key={status} value={status}>{status}</option>)}</select></td><td style={{ padding: '16px 18px', color: 'var(--muted)', fontSize: '.8rem' }}>{item.id.slice(0, 8)}</td><td style={{ padding: '16px 18px', textAlign: 'right' }}><button onClick={() => removeAppointment(item.id)} aria-label={`Delete appointment for ${item.name}`} style={{ border: 0, background: 'transparent', color: '#c53030', cursor: 'pointer', padding: 6 }}><Trash2 size={17} /></button></td></tr>)}</tbody>)}</table></div>
+          {loading ? <p style={{ padding: 22, color: 'var(--muted)' }}>Loading appointments…</p> : appointments.length === 0 ? <p style={{ padding: 22, color: 'var(--muted)' }}>No appointments yet.</p> : visibleAppointments.length === 0 ? <p style={{ padding: 22, color: 'var(--muted)' }}>No appointments match these filters.</p> : !dayAppointments.length ? <p style={{ padding: 22, color: 'var(--muted)' }}>No appointments for {formatDate(activeDate)}.</p> : (
+            <div style={{ overflowX: 'auto' }}><table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 760 }}><thead><tr style={{ textAlign: 'left', background: 'var(--off-white)' }}>{['Patient', 'Phone', 'Requested date', 'Status', 'Booking ID', ''].map(label => <th key={label} style={{ padding: '13px 18px', fontSize: '.78rem', textTransform: 'uppercase', letterSpacing: '.04em', color: 'var(--muted)' }}>{label}</th>)}</tr></thead><tbody><tr><th colSpan={6} style={{ padding: '14px 18px', textAlign: 'left', background: 'var(--orange-light)', color: 'var(--orange-dark)', fontFamily: 'Manrope', fontSize: '.95rem' }}>{formatDate(activeDate)} <span style={{ fontWeight: 500, color: 'var(--muted)', fontFamily: 'Inter', fontSize: '.8rem' }}>({dayAppointments.length} {dayAppointments.length === 1 ? 'appointment' : 'appointments'})</span></th></tr>{dayAppointments.map(item => <tr key={item.id} style={{ borderTop: '1px solid var(--border)' }}><td style={{ padding: '16px 18px', fontWeight: 700 }}>{item.name}</td><td style={{ padding: '16px 18px' }}><a href={`tel:${item.phone}`} style={{ color: 'inherit' }}>{item.phone}</a></td><td style={{ padding: '16px 18px' }}>{item.date}</td><td style={{ padding: '16px 18px' }}><select aria-label={`Status for ${item.name}`} value={item.status || 'new'} onChange={e => changeStatus(item.id, e.target.value as Appointment['status'])} style={{ border: '1px solid var(--border)', borderRadius: 6, padding: '7px 8px', textTransform: 'capitalize' }}>{statuses.map(status => <option key={status} value={status}>{status}</option>)}</select></td><td style={{ padding: '16px 18px', color: 'var(--muted)', fontSize: '.8rem' }}>{item.id.slice(0, 8)}</td><td style={{ padding: '16px 18px', textAlign: 'right' }}><button onClick={() => removeAppointment(item.id)} aria-label={`Delete appointment for ${item.name}`} style={{ border: 0, background: 'transparent', color: '#c53030', cursor: 'pointer', padding: 6 }}><Trash2 size={17} /></button></td></tr>)}</tbody></table></div>
           )}
         </section>
       </div>
