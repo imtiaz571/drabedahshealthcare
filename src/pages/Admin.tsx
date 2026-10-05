@@ -21,8 +21,6 @@ const statuses = ['new', 'contacted', 'confirmed', 'completed', 'cancelled'] as 
 function Login() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
-  const [search, setSearch] = useState('')
-  const [statusFilter, setStatusFilter] = useState('all')
   const [busy, setBusy] = useState(false)
 
   async function submit(event: React.FormEvent) {
@@ -68,6 +66,8 @@ function Dashboard({ user }: { user: User }) {
   const [appointments, setAppointments] = useState<Appointment[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [search, setSearch] = useState('')
+  const [statusFilter, setStatusFilter] = useState('all')
 
   async function loadAppointments() {
     setLoading(true)
