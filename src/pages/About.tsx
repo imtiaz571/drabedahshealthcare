@@ -1,8 +1,21 @@
 import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, Award, BookOpen, Heart, Shield, CheckCircle, Activity, Sparkles } from 'lucide-react'
+import ultrasoundImage from '../assets/about-ultrasound.jpg'
+import consultationImage from '../assets/about-consultation.jpg'
+import checkupImage from '../assets/about-checkup.jpg'
+import bloodPressureImage from '../assets/about-blood-pressure.jpg'
+import patientCareImage from '../assets/about-patient-care.jpg'
 
 const DOCTOR_IMG = 'https://images.unsplash.com/photo-1789062368232-8f630fcbef16?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+
+const clinicGallery = [
+  { src: ultrasoundImage, alt: 'Dr. Abedah performing an ultrasound examination' },
+  { src: consultationImage, alt: 'Dr. Abedah consulting with a patient' },
+  { src: checkupImage, alt: 'Dr. Abedah checking a patient at the clinic' },
+  { src: bloodPressureImage, alt: 'Dr. Abedah recording a patient examination' },
+  { src: patientCareImage, alt: 'Dr. Abedah providing patient care' },
+]
 
 function FadeSection({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   const ref = useRef<HTMLDivElement>(null)
@@ -163,6 +176,26 @@ export default function About() {
         </div>
       </section>
 
+      {/* ── CLINIC GALLERY ── */}
+      <section style={{ padding: 'clamp(60px, 8vw, 100px) 32px', background: '#fff' }}>
+        <div style={{ maxWidth: 1280, margin: '0 auto' }}>
+          <FadeSection>
+            <div style={{ textAlign: 'center', marginBottom: 40 }}>
+              <div className="section-label" style={{ marginBottom: 12 }}>Inside The Clinic</div>
+              <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.4rem)', marginBottom: 12 }}>Care, Expertise &amp; Modern Diagnostics</h2>
+              <p style={{ color: 'var(--muted)', maxWidth: 620, margin: '0 auto', lineHeight: 1.7 }}>A look at Dr. Abedah's Sono Healthcare and the compassionate diagnostic care we provide every day.</p>
+            </div>
+          </FadeSection>
+          <div className="clinic-gallery-grid">
+            {clinicGallery.map(({ src, alt }, index) => (
+              <FadeSection key={src} delay={index * 70}>
+                <img src={src} alt={alt} loading="lazy" style={{ width: '100%', height: index === 0 ? 420 : 260, objectFit: 'cover', borderRadius: 12, display: 'block', boxShadow: '0 12px 32px rgba(0,0,0,.1)' }} />
+              </FadeSection>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── EXPERIENCE STATS ── */}
       <section style={{ background: 'var(--orange)', padding: '60px 32px', clipPath: 'polygon(0 4%, 100% 0, 100% 96%, 0 100%)', marginTop: -20, marginBottom: -20 }}>
         <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 32, textAlign: 'center' }}>
@@ -280,12 +313,20 @@ export default function About() {
       </section>
 
       <style>{`
+        .clinic-gallery-grid {
+          display: grid;
+          grid-template-columns: 1.35fr 1fr 1fr;
+          gap: 20px;
+        }
+        .clinic-gallery-grid > div:first-child { grid-row: span 2; }
         @media (max-width: 768px) {
           section > div[style*="grid-template-columns: 1fr 1fr"] {
             grid-template-columns: 1fr !important;
             gap: 40px !important;
           }
           .timeline-item { padding-left: 40px; }
+          .clinic-gallery-grid { grid-template-columns: 1fr !important; }
+          .clinic-gallery-grid img { height: 280px !important; }
         }
       `}</style>
     </div>
