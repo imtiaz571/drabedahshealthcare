@@ -80,14 +80,19 @@ function Dashboard({ user }: { user: User }) {
       const records = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }) as Appointment)
       records.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0))
       setAppointments(records)
+    } catch {
+      setError('Could not load appointments. Check your Firebase connection and rules.')
+    } finally {
+      setLoading(false)
+    }
+    try {
       const messageSnapshot = await getDocs(collection(db, 'messages'))
       const inquiries = messageSnapshot.docs.map(item => ({ id: item.id, ...item.data() }) as ContactMessage)
       inquiries.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0))
       setMessages(inquiries)
     } catch {
-      setError('Could not load appointments. Check your Firebase connection and rules.')
-    } finally {
-      setLoading(false)
+      // Inquiry access can be deployed separately; appointments should remain usable.
+      setMessages([])
     }
   }
 
