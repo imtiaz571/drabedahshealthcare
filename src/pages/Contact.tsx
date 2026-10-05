@@ -168,7 +168,7 @@ export default function Contact() {
 
           <FadeSection delay={100}>
             <div className="map-placeholder" style={{ height: 360, marginBottom: 24 }}>
-              <iframe title="Dr. Abedah's Sono Healthcare location" src="https://www.google.com/maps?q=Dr.+Abedah%27s+Sono+Healthcare,+43+East+Stadium+Market,+Rikabibazar,+Sylhet,+Bangladesh&output=embed" style={{ width: '100%', height: '100%', border: 0, borderRadius: 12 }} loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
+              <iframe title="Dr. Abedah's Sono Healthcare location" src="https://www.google.com/maps?q=Dr.+Abedah%27s+Sono+Healthcare,+43+East+Stadium+Market,+Rikabibazar,+Sylhet,+Bangladesh&ll=24.898740318596424,91.8628663464569&z=17&output=embed" style={{ width: '100%', height: '100%', border: 0, borderRadius: 12 }} loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
             </div>
 
             {/* Opening hours */}
@@ -306,3 +306,4 @@ export default function Contact() {
     </div>
   )
 }
+
