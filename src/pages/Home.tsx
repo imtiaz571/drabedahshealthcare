@@ -474,9 +474,21 @@ export default function Home() {
           }
 
           .hero-container {
+            display: flex !important;
+            flex-direction: column !important;
             grid-template-columns: 1fr !important;
             padding: 24px 20px 32px !important;
             gap: 36px !important;
+          }
+
+          /* Put the doctor's photo first on mobile so the hero introduces her
+             visually before presenting the supporting credentials and copy. */
+          .hero-image-col {
+            order: -1 !important;
+          }
+
+          .hero-text-col {
+            order: 1 !important;
           }
 
           /* 4. Refined mobile typography & spacing */
@@ -523,7 +535,7 @@ export default function Home() {
 
           /* 5. Doctor image on mobile: responsive sizing with dedicated brand orange backdrop */
           .hero-image-col {
-            margin-top: 8px !important;
+            margin-top: 0 !important;
             padding-bottom: 20px !important;
           }
 
