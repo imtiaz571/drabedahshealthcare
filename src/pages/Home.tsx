@@ -112,7 +112,7 @@ export default function Home() {
             <div className="hero-bmdc-badge" style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'var(--orange-light)', border: '1px solid rgba(255,90,31,0.2)', padding: '6px 14px', borderRadius: 20, marginBottom: 20 }}>
               <span style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--orange)' }}></span>
               <span style={{ fontFamily: 'Manrope', fontWeight: 700, fontSize: '0.8rem', color: 'var(--orange-dark)', letterSpacing: '0.04em' }}>
-                BMDC REG NO: A-56758 · GP & Consultant in SONOLOGY
+                BMDC REG NO: A-56758 · CONSULTANT SONOLOGIST
               </span>
             </div>
 
