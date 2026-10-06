@@ -167,7 +167,7 @@ export default function Home() {
             }} />
             <img
               src={DOCTOR_IMG}
-              alt="Dr. Abedah Begum Fazlur, Consultant Sonologist"
+              alt="Dr. Abedah Begum Fazlur, GP & Consultant in Sonology"
               className="hero-doc-img"
               style={{
                 width: 380, height: 480,
@@ -189,7 +189,7 @@ export default function Home() {
                 <Award size={22} color="var(--orange)" />
               </div>
               <div>
-                <div style={{ fontFamily: 'Manrope', fontWeight: 800, fontSize: '0.95rem', color: 'var(--black)' }}>Consultant Sonologist</div>
+                <div style={{ fontFamily: 'Manrope', fontWeight: 800, fontSize: '0.95rem', color: 'var(--black)' }}>GP & Consultant in Sonology</div>
                 <div style={{ fontSize: '0.75rem', color: 'var(--orange-dark)', fontWeight: 600 }}>TVS, MSK &amp; Duplex Doppler</div>
               </div>
             </div>
