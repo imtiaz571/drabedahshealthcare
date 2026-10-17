@@ -406,7 +406,7 @@ export default function Home() {
             <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: '1.05rem', marginBottom: 40, lineHeight: 1.7 }}>
               Schedule your appointment at Dr. Abedah's Sono Healthcare today. High-precision imaging and compassionate clinical care are just one click away.
             </p>
-            <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
+            <div className="cta-row" style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
               <Link to="/appointment" className="btn-primary">
                 Book an Appointment <ArrowRight size={16} />
               </Link>
@@ -537,15 +537,20 @@ export default function Home() {
             margin-top: 24px !important;
           }
 
-          /* 5. Doctor image on mobile: responsive sizing with dedicated brand orange backdrop */
+          /* 5. Doctor photo on mobile: framed by the orange shape, stacked as a column
+             so the credential card can sit cleanly below without an overlap bump. */
           .hero-image-col {
             margin-top: 0 !important;
-            padding-bottom: 20px !important;
+            padding-bottom: 8px !important;
+            flex-direction: column !important;
+            align-items: center !important;
           }
 
           .hero-image-backdrop {
-            width: min(320px, 86vw) !important;
-            height: 380px !important;
+            width: min(316px, 85vw) !important;
+            height: 360px !important;
+            top: 0 !important;
+            transform: translateX(-50%) !important;
             background: linear-gradient(135deg, var(--orange) 0%, var(--orange-dark) 100%) !important;
             opacity: 0.95 !important;
             border-radius: 46% 54% 42% 58% / 52% 44% 56% 48% !important;
@@ -557,15 +562,15 @@ export default function Home() {
             box-shadow: 0 20px 48px rgba(255, 90, 31, 0.25) !important;
           }
 
-          /* 6. Centered floating badge on mobile so it stays completely on-screen */
+          /* 6. Credential card tucks neatly onto the bottom edge of the photo,
+             centered, with nothing poking out beneath it. */
           .hero-floating-card {
-            position: absolute !important;
-            left: 50% !important;
-            transform: translateX(-50%) !important;
-            bottom: 8px !important;
-            width: calc(100% - 32px) !important;
-            max-width: 290px !important;
-            padding: 10px 14px !important;
+            position: static !important;
+            transform: none !important;
+            margin: -34px auto 0 !important;
+            width: calc(100% - 40px) !important;
+            max-width: 300px !important;
+            padding: 12px 16px !important;
           }
 
           /* 7. Grid collapsing for other 2-column sections */

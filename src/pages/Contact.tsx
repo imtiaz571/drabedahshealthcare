@@ -293,7 +293,7 @@ export default function Contact() {
           <p style={{ color: 'rgba(255,255,255,0.85)', marginBottom: 32, fontSize: '1.05rem', maxWidth: 600, margin: '0 auto 32px' }}>
             "Giving Your Disease A Name" with high-precision sonology and compassionate care in Rikabibazar, Sylhet.
           </p>
-          <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
+          <div className="cta-row" style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link to="/appointment" className="btn-outline-white">
               Book an Appointment Online <ArrowRight size={16} />
             </Link>

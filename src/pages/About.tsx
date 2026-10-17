@@ -170,7 +170,7 @@ export default function About() {
                   Clinic Slogan: "Giving Your Disease A Name" — Without an accurate diagnosis, treatment is merely guesswork. We provide definitive clarity so patients and doctors can take the right path forward.
                 </p>
               </div>
-              <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+              <div className="cta-row" style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
                 <Link to="/appointment" className="btn-primary">
                   Book Diagnostic Scan <ArrowRight size={16} />
                 </Link>
@@ -308,7 +308,7 @@ export default function About() {
           <p style={{ color: 'var(--muted)', fontSize: '1.05rem', marginBottom: 40, maxWidth: 520, margin: '0 auto 40px' }}>
             Book your appointment with Dr. Abedah Begum Fazlur at Dr. Abedah's Sono Healthcare today.
           </p>
-          <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
+          <div className="cta-row" style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link to="/appointment" className="btn-primary" style={{ fontSize: '1rem', padding: '16px 36px' }}>
               Book an Appointment <ArrowRight size={16} />
             </Link>

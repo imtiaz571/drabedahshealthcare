@@ -229,7 +229,7 @@ export default function Services() {
             <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: '1.05rem', marginBottom: 40, maxWidth: 520, margin: '0 auto 40px' }}>
               Book your scan with Dr. Abedah Begum Fazlur at Dr. Abedah's Sono Healthcare, Rikabibazar, Sylhet.
             </p>
-            <div style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
+            <div className="cta-row" style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
               <Link to="/appointment" className="btn-primary" style={{ fontSize: '1rem', padding: '16px 36px' }}>
                 Book Your Scan Online <ArrowRight size={16} />
               </Link>
