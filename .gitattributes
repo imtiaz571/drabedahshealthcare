@@ -6,9 +6,12 @@
 # ---------------------------------------------------------------------------
 *.png                filter=lfs diff=lfs merge=lfs -text
 *.jpg                filter=lfs diff=lfs merge=lfs -text
-src/assets/clinic-front.jpg -filter -diff -merge -text
-src/assets/about-*.jpg -filter -diff -merge -text
 *.jpeg               filter=lfs diff=lfs merge=lfs -text
+# Bundled web assets must stay as real binaries (Vercel does not pull Git LFS).
+src/assets/*.jpg  -filter -diff -merge -text
+src/assets/*.jpeg -filter -diff -merge -text
+src/assets/*.png  -filter -diff -merge -text
+src/assets/*.webp -filter -diff -merge -text
 *.gif                filter=lfs diff=lfs merge=lfs -text
 *.bmp                filter=lfs diff=lfs merge=lfs -text
 *.tiff               filter=lfs diff=lfs merge=lfs -text
