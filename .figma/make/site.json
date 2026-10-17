@@ -4,8 +4,11 @@
   "robots": {
     "index": true
   },
+  "openGraph": {
+    "image": "https://www.drabedahshealthcare.com/og-image.jpg"
+  },
   "accessibility": {
-    "addBypassLinks": false,
+    "addBypassLinks": true,
     "ignoreReducedMotion": false
   }
 }

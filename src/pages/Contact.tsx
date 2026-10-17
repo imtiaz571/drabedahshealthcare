@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { MapPin, Phone, Mail, Clock, Globe, ArrowRight, Send, CheckCircle, Award } from 'lucide-react'
 import { createContactMessage } from '../lib/messages'
+import { useSeo } from '../lib/seo'
 
 const FbIcon = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
 const GlobeIcon = () => <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
@@ -45,6 +46,11 @@ const socials = [
 ]
 
 export default function Contact() {
+  useSeo({
+    title: "Contact Dr. Abedah's Sono Healthcare — Rikabibazar, Sylhet",
+    description: "Contact Dr. Abedah's Sono Healthcare: 43 East Stadium Market, Rikabibazar, Sylhet. Call +880 1727 414 991 for ultrasound scans and consultations.",
+    path: '/contact',
+  })
   const [form, setForm] = useState<ContactForm>({ name: '', email: '', phone: '', subject: '', message: '' })
   const [errors, setErrors] = useState<Errs>({})
   const [sent, setSent] = useState(false)

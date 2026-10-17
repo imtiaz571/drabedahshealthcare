@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, CalendarDays, Check, Home, Phone, UserRound, Mail, Stethoscope } from 'lucide-react'
 import { createAppointment } from '../lib/appointments'
+import { useSeo } from '../lib/seo'
 
 const SCAN_TYPES = [
   'Transvaginal Sonography (TVS)',
@@ -14,6 +15,11 @@ const SCAN_TYPES = [
 ]
 
 export default function Appointment() {
+  useSeo({
+    title: "Book an Ultrasound Appointment — Dr. Abedah's Sono Healthcare",
+    description: 'Request an ultrasound or sonology appointment with Dr. Abedah Begum Fazlur in Rikabibazar, Sylhet. The clinic will call to confirm your preferred date.',
+    path: '/appointment',
+  })
   const [submitted, setSubmitted] = useState(false)
   const [submitting, setSubmitting] = useState(false)
   const [form, setForm] = useState({ name: '', phone: '', service: '', date: '', email: '' })

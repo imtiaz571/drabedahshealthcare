@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, X, Activity, Shield, Sparkles, Heart, ChevronRight, CheckCircle, Stethoscope, Layers } from 'lucide-react'
+import { useSeo } from '../lib/seo'
 
 function FadeSection({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
   const ref = useRef<HTMLDivElement>(null)
@@ -141,6 +142,11 @@ const services = [
 ]
 
 export default function Services() {
+  useSeo({
+    title: 'Ultrasound & Sonology Services in Sylhet — TVS, MSK, Doppler',
+    description: "Diagnostic ultrasound services at Dr. Abedah's Sono Healthcare, Sylhet: Transvaginal (TVS), advanced obstetrical, whole abdomen, MSK and Duplex Doppler studies.",
+    path: '/services',
+  })
   const [modal, setModal] = useState<typeof services[0] | null>(null)
 
   useEffect(() => {

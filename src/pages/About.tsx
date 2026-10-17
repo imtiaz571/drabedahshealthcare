@@ -9,6 +9,7 @@ import doctorPortrait from '../assets/dr-abedah-portrait.jpg'
 import ultrasoundActionImage from '../assets/dr-abedah-ultrasound.jpg'
 import workstationImage from '../assets/dr-abedah-workstation.jpg'
 import profileCardImage from '../assets/clinic-profile-card.jpg'
+import { useSeo } from '../lib/seo'
 
 const DOCTOR_IMG = doctorPortrait
 
@@ -92,6 +93,11 @@ const experienceStats = [
 ]
 
 export default function About() {
+  useSeo({
+    title: 'About Dr. Abedah Begum Fazlur — Consultant Sonologist, Sylhet',
+    description: "Meet Dr. Abedah Begum Fazlur, MBBS (SUST), DMU, CMU — Consultant Sonologist at Dr. Abedah's Sono Healthcare, Sylhet. Trained in Medicine & Gynaecology.",
+    path: '/about',
+  })
   return (
     <div>
       {/* ── HERO ── */}

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import ultrasoundActionImage from '../assets/dr-abedah-ultrasound.jpg'
 import { Link } from 'react-router-dom'
+import { useSeo } from '../lib/seo'
 import {
   ArrowRight, Activity, Shield, Award,
   Star, MapPin, Phone, Mail, Clock, ChevronRight, Stethoscope, Sparkles, CheckCircle2
@@ -83,6 +84,11 @@ function FadeSection({ children, delay = 0 }: { children: React.ReactNode; delay
 }
 
 export default function Home() {
+  useSeo({
+    title: "Dr. Abedah's Sono Healthcare — Ultrasound Clinic in Sylhet",
+    description: 'Accurate ultrasound & sonology diagnostics in Rikabibazar, Sylhet with Dr. Abedah Begum Fazlur (BMDC A-56758): TVS, obstetric, MSK & Doppler scans. Book today.',
+    path: '/',
+  })
   return (
     <div>
       {/* ── HERO ── */}
