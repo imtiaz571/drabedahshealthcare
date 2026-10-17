@@ -76,10 +76,8 @@ export default function Contact() {
       await createContactMessage(form)
       setSent(true)
     } catch (error) {
-      const code = error && typeof error === 'object' && 'code' in error ? String(error.code) : 'unknown'
-      setSubmitError(code === 'permission-denied'
-        ? 'Message storage is unavailable because of a site configuration issue. Please call the clinic. (permission-denied)'
-        : `Your message could not be sent. Please try again or call the clinic. (${code})`)
+      console.error('Contact message submission failed:', error)
+      setSubmitError('Sorry, your message could not be sent right now. Please try again, or call the clinic directly at +880 1727 414 991.')
     } finally { setSending(false) }
   }
 
