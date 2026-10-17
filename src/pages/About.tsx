@@ -1,20 +1,21 @@
 import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowRight, Award, BookOpen, Heart, Shield, CheckCircle, Activity, Sparkles } from 'lucide-react'
-import ultrasoundImage from '../assets/about-ultrasound.jpg'
 import consultationImage from '../assets/about-consultation.jpg'
 import checkupImage from '../assets/about-checkup.jpg'
-import bloodPressureImage from '../assets/about-blood-pressure.jpg'
 import patientCareImage from '../assets/about-patient-care.jpg'
 import bloodPressurePatientImage from '../assets/about-blood-pressure-patient.jpg'
+import doctorPortrait from '../assets/dr-abedah-portrait.jpg'
+import ultrasoundActionImage from '../assets/dr-abedah-ultrasound.jpg'
+import workstationImage from '../assets/dr-abedah-workstation.jpg'
 
-const DOCTOR_IMG = 'https://images.unsplash.com/photo-1789062368232-8f630fcbef16?q=80&w=880&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+const DOCTOR_IMG = doctorPortrait
 
 const clinicGallery = [
-  { src: ultrasoundImage, alt: 'Dr. Abedah performing an ultrasound examination' },
+  { src: ultrasoundActionImage, alt: 'Dr. Abedah performing an ultrasound scan on the Philips machine' },
+  { src: workstationImage, alt: 'Dr. Abedah at the ultrasound diagnostic workstation' },
   { src: consultationImage, alt: 'Dr. Abedah consulting with a patient' },
   { src: checkupImage, alt: 'Dr. Abedah checking a patient at the clinic' },
-  { src: bloodPressureImage, alt: 'Dr. Abedah recording a patient examination' },
   { src: patientCareImage, alt: 'Dr. Abedah providing patient care' },
   { src: bloodPressurePatientImage, alt: 'Dr. Abedah checking a patient’s blood pressure' },
 ]
