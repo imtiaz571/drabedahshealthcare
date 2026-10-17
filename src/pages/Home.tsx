@@ -230,6 +230,10 @@ export default function Home() {
               <img
                 src={ABOUT_IMG}
                 alt="Dr. Abedah performing ultrasound consultation"
+                width={1064}
+                height={1600}
+                loading="lazy"
+                decoding="async"
                 style={{ width: '100%', height: 460, objectFit: 'cover', borderRadius: 12, position: 'relative', zIndex: 1, boxShadow: '0 20px 60px rgba(0,0,0,0.12)' }}
               />
             </div>

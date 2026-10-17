@@ -2,7 +2,7 @@
   "title": "Dr. Abedah's Sono Healthcare | Sylhet",
   "description": "Ultrasound diagnostics and compassionate care with Dr. Abedah Begum Fazlur in Rikabibazar, Sylhet. Book an appointment at Dr. Abedah's Sono Healthcare.",
   "robots": {
-    "index": false
+    "index": true
   },
   "accessibility": {
     "addBypassLinks": false,

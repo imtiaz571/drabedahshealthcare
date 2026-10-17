@@ -131,6 +131,10 @@ export default function About() {
               <img
                 src={DOCTOR_IMG}
                 alt="Dr. Abedah Begum Fazlur"
+                width={1512}
+                height={1006}
+                loading="lazy"
+                decoding="async"
                 style={{ width: '100%', height: 560, objectFit: 'cover', borderRadius: 12, position: 'relative', zIndex: 1, boxShadow: '0 24px 80px rgba(0,0,0,0.15)' }}
               />
               {/* Floating quote badge */}

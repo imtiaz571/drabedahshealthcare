@@ -1,13 +1,17 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
-import { useEffect, useLayoutEffect } from 'react'
+import { useEffect, useLayoutEffect, lazy, Suspense } from 'react'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import Home from './pages/Home'
-import About from './pages/About'
-import Services from './pages/Services'
-import Appointment from './pages/Appointment'
-import Contact from './pages/Contact'
-import Admin from './pages/Admin'
+
+// Code-split the secondary routes so the landing page ships a minimal bundle.
+// Firebase (used by Appointment/Contact/Admin) now loads only when those
+// routes are visited, instead of on every initial page load.
+const About = lazy(() => import('./pages/About'))
+const Services = lazy(() => import('./pages/Services'))
+const Appointment = lazy(() => import('./pages/Appointment'))
+const Contact = lazy(() => import('./pages/Contact'))
+const Admin = lazy(() => import('./pages/Admin'))
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -24,6 +28,25 @@ function ScrollToTop() {
   return null
 }
 
+function RouteFallback() {
+  return (
+    <div
+      role="status"
+      aria-label="Loading"
+      style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+    >
+      <span
+        style={{
+          width: 36, height: 36, borderRadius: '50%',
+          border: '3px solid var(--border)', borderTopColor: 'var(--orange)',
+          animation: 'routeSpin 0.7s linear infinite',
+        }}
+      />
+      <style>{`@keyframes routeSpin { to { transform: rotate(360deg) } }`}</style>
+    </div>
+  )
+}
+
 export default function App() {
   // Keep existing shared hash links working after switching to clean URLs.
   if (window.location.hash.startsWith('#/')) {
@@ -33,10 +56,12 @@ export default function App() {
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <Routes>
-        <Route path="/admin" element={<Admin />} />
-        <Route path="*" element={<PublicSite />} />
-      </Routes>
+      <Suspense fallback={<RouteFallback />}>
+        <Routes>
+          <Route path="/admin" element={<Admin />} />
+          <Route path="*" element={<PublicSite />} />
+        </Routes>
+      </Suspense>
     </BrowserRouter>
   )
 }
