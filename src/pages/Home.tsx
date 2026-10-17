@@ -206,7 +206,7 @@ export default function Home() {
 
       {/* ── STATS ── */}
       <section style={{ background: 'var(--black)', padding: '64px 32px' }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 32, textAlign: 'center' }}>
+        <div className="m-stats-grid" style={{ maxWidth: 1280, margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 32, textAlign: 'center' }}>
           {stats.map(({ value, label }) => (
             <FadeSection key={label}>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
@@ -250,7 +250,7 @@ export default function Home() {
               <p style={{ lineHeight: 1.8, color: '#555', marginBottom: 28 }}>
                 Trained in Medicine and Gynaecology, she specializes in advanced Transvaginal Sonography (TVS), detailed Obstetrical ultrasound, Musculoskeletal (MSK) evaluation, and vascular Duplex study, providing clear diagnostic answers for targeted recovery.
               </p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 20, marginBottom: 32 }}>
+              <div className="m-about-cards" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 20, marginBottom: 32 }}>
                 {[
                   { label: 'Degrees', value: 'MBBS (SUST), DMU, CMU' },
                   { label: 'Specialization', value: 'TVS, Obstetrical, MSK, Duplex' },
@@ -572,6 +572,18 @@ export default function Home() {
           section > div[style*="grid-template-columns: 1fr 1fr"] {
             grid-template-columns: 1fr !important;
             gap: 36px !important;
+          }
+
+          /* 8. Stats: compact 2x2 grid instead of a tall single column */
+          .m-stats-grid {
+            grid-template-columns: 1fr 1fr !important;
+            gap: 32px 16px !important;
+          }
+
+          /* 9. "About" credential cards: 2x2 instead of stacked */
+          .m-about-cards {
+            grid-template-columns: 1fr 1fr !important;
+            gap: 12px !important;
           }
         }
       `}</style>

@@ -342,7 +342,7 @@ export default function About() {
             gap: 40px !important;
           }
           .timeline-item { padding-left: 40px; }
-          .clinic-gallery-grid { grid-template-columns: 1fr !important; }
+          .clinic-gallery-grid { grid-template-columns: 1fr 1fr !important; gap: 12px !important; }
         }
       `}</style>
     </div>
