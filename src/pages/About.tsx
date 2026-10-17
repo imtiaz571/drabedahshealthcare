@@ -8,6 +8,7 @@ import bloodPressurePatientImage from '../assets/about-blood-pressure-patient.jp
 import doctorPortrait from '../assets/dr-abedah-portrait.jpg'
 import ultrasoundActionImage from '../assets/dr-abedah-ultrasound.jpg'
 import workstationImage from '../assets/dr-abedah-workstation.jpg'
+import profileCardImage from '../assets/clinic-profile-card.jpg'
 
 const DOCTOR_IMG = doctorPortrait
 
@@ -200,6 +201,32 @@ export default function About() {
               </FadeSection>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ── PROFILE & CONTACT CARD ── */}
+      <section style={{ padding: 'clamp(60px, 8vw, 100px) 32px', background: 'var(--off-white)' }}>
+        <div style={{ maxWidth: 1000, margin: '0 auto' }}>
+          <FadeSection>
+            <div style={{ textAlign: 'center', marginBottom: 40 }}>
+              <div className="section-label" style={{ marginBottom: 12 }}>At A Glance</div>
+              <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.4rem)', marginBottom: 12 }}>Profile &amp; Contact Card</h2>
+              <p style={{ color: 'var(--muted)', maxWidth: 640, margin: '0 auto', lineHeight: 1.7 }}>
+                Dr. Abedah Begum Fazlur's qualifications, specialities and clinic contact details — in English &amp; Bangla.
+              </p>
+            </div>
+          </FadeSection>
+          <FadeSection delay={120}>
+            <img
+              src={profileCardImage}
+              alt="Dr. Abedah Begum Fazlur — qualifications, specialities and clinic contact details, in English and Bangla"
+              width={1600}
+              height={1063}
+              loading="lazy"
+              decoding="async"
+              style={{ width: '100%', height: 'auto', display: 'block', borderRadius: 14, border: '1px solid var(--border)', boxShadow: '0 20px 60px rgba(0,0,0,0.12)' }}
+            />
+          </FadeSection>
         </div>
       </section>
 
