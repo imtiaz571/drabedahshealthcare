@@ -120,23 +120,32 @@ export default function Header() {
         </div>
       </header>
 
-      {/* Mobile menu overlay */}
-      <div className={`mobile-menu ${menuOpen ? 'open' : ''}`} role="dialog" aria-modal="true" aria-label="Navigation menu">
-        <button
-          onClick={() => setMenuOpen(false)}
-          aria-label="Close menu"
-          style={{ position: 'absolute', top: 20, right: 24, background: 'none', border: 'none', color: '#fff', cursor: 'pointer' }}
+      {/* Mobile dropdown menu */}
+      <div
+        className={`mobile-nav-backdrop ${menuOpen ? 'open' : ''}`}
+        onClick={() => setMenuOpen(false)}
+        aria-hidden={!menuOpen}
+      >
+        <nav
+          className="mobile-nav-panel"
+          onClick={e => e.stopPropagation()}
+          aria-label="Mobile navigation"
         >
-          <X size={28} />
-        </button>
-        {navLinks.map(({ label, path }) => (
-          <Link key={path} to={path} onClick={() => setMenuOpen(false)}>
-            {label}
+          {navLinks.map(({ label, path }) => (
+            <Link
+              key={path}
+              to={path}
+              className={pathname === path ? 'active' : ''}
+              aria-current={pathname === path ? 'page' : undefined}
+              onClick={() => setMenuOpen(false)}
+            >
+              {label}
+            </Link>
+          ))}
+          <Link to="/appointment" className="btn-primary mobile-book" onClick={() => setMenuOpen(false)}>
+            Book Appointment
           </Link>
-        ))}
-        <Link to="/appointment" className="btn-primary" onClick={() => setMenuOpen(false)}>
-          Book Appointment
-        </Link>
+        </nav>
       </div>
 
       <style>{`
