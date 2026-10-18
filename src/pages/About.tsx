@@ -366,7 +366,7 @@ export default function About() {
         }
         .clinic-gallery-grid {
           display: grid;
-          grid-template-columns: 1.35fr 1fr 1fr;
+          grid-template-columns: 1fr 1fr 1fr;
           gap: 20px;
         }
         @media (max-width: 768px) {
