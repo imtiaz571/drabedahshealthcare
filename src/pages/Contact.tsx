@@ -297,7 +297,7 @@ export default function Contact() {
             Ready to Book Your Diagnostic Scan?
           </h2>
           <p style={{ color: 'rgba(255,255,255,0.85)', marginBottom: 32, fontSize: '1.05rem', maxWidth: 600, margin: '0 auto 32px' }}>
-            "Giving Your Disease A Name" with high-precision sonology and compassionate care in Rikabibazar, Sylhet.
+            High-precision sonology and compassionate diagnostic care, right here in Rikabibazar, Sylhet.
           </p>
           <div className="cta-row" style={{ display: 'flex', gap: 16, justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link to="/appointment" className="btn-outline-white">

@@ -54,7 +54,7 @@ const testimonials = [
     service: 'Transvaginal Sonography (TVS)',
   },
   {
-    text: "We had our detailed anomaly pregnancy scan with Dr. Abedah Fazlur. She explained every detail with extreme patience and care. The best sonologist in Sylhet!",
+    text: "We had our detailed anomaly pregnancy scan with Dr. Abedah Begum Fazlur. She explained every detail with extreme patience and care. The best sonologist in Sylhet!",
     name: 'Rehana & Farhan Chowdhury',
     service: 'Advanced Obstetrical Ultrasound',
   },
@@ -253,22 +253,9 @@ export default function Home() {
               <p style={{ lineHeight: 1.8, color: '#555', marginBottom: 16 }}>
                 <strong>Dr. Abedah Begum Fazlur</strong> is a dedicated Consultant Sonologist practicing at <em>Dr. Abedah's Sono Healthcare</em> in Sylhet. With post-graduate training (PGT) at Sylhet MAG Osmani Medical College &amp; Hospital and medical ultrasound credentials (DMU, CMU), she brings rigorous clinical excellence to every patient.
               </p>
-              <p style={{ lineHeight: 1.8, color: '#555', marginBottom: 28 }}>
+              <p style={{ lineHeight: 1.8, color: '#555', marginBottom: 32 }}>
                 Trained in Medicine and Gynaecology, she specializes in advanced Transvaginal Sonography (TVS), detailed Obstetrical ultrasound, Musculoskeletal (MSK) evaluation, and vascular Duplex study, providing clear diagnostic answers for targeted recovery.
               </p>
-              <div className="m-about-cards" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 20, marginBottom: 32 }}>
-                {[
-                  { label: 'Degrees', value: 'MBBS (SUST), DMU, CMU' },
-                  { label: 'Specialization', value: 'TVS, Obstetrical, MSK, Duplex' },
-                  { label: 'Diabetes Care', value: 'CCD (BIRDEM)' },
-                  { label: 'Training', value: 'PGT (SOMCH)' },
-                ].map(({ label, value }) => (
-                  <div key={label} style={{ background: '#fff', padding: '12px 16px', borderRadius: 8, border: '1px solid var(--border)' }}>
-                    <div style={{ fontSize: '0.75rem', color: 'var(--muted)', textTransform: 'uppercase', fontWeight: 600, letterSpacing: '0.04em' }}>{label}</div>
-                    <div style={{ fontFamily: 'Manrope', fontWeight: 700, fontSize: '0.9rem', color: 'var(--black)', marginTop: 2 }}>{value}</div>
-                  </div>
-                ))}
-              </div>
               <Link to="/about" className="btn-primary">
                 Learn More About Dr. Abedah <ChevronRight size={16} />
               </Link>
@@ -405,7 +392,7 @@ export default function Home() {
         }} />
         <div style={{ maxWidth: 800, margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 1 }}>
           <FadeSection>
-            <div className="section-label" style={{ marginBottom: 16 }}>Giving Your Disease A Name</div>
+            <div className="section-label" style={{ marginBottom: 16 }}>Schedule Your Visit</div>
             <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3.2rem)', color: '#fff', marginBottom: 20 }}>
               Need An Accurate Ultrasound &amp; Consultation?
             </h2>
@@ -589,12 +576,6 @@ export default function Home() {
           .m-stats-grid {
             grid-template-columns: 1fr 1fr !important;
             gap: 32px 16px !important;
-          }
-
-          /* 9. "About" credential cards: 2x2 instead of stacked */
-          .m-about-cards {
-            grid-template-columns: 1fr 1fr !important;
-            gap: 12px !important;
           }
         }
       `}</style>

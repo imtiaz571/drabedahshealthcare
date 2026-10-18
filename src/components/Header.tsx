@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, Phone } from 'lucide-react'
 
 const navLinks = [
   { label: 'Home', path: '/' },
@@ -92,7 +92,7 @@ export default function Header() {
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = 'var(--orange)' }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = 'var(--black)' }}
             >
-              📞 01727-414991
+              <Phone size={14} color="var(--orange)" /> 01727-414991
             </a>
             <Link to="/appointment" className="btn-primary" style={{ padding: '10px 20px', fontSize: '0.875rem' }}>
               Book Appointment

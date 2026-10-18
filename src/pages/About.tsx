@@ -116,7 +116,7 @@ export default function About() {
             Consultant Sonologist · Dr. Abedah's Sono Healthcare
           </div>
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '1.05rem', maxWidth: 620, lineHeight: 1.75 }}>
-            Trained in Medicine &amp; Gynaecology, specialized in TVS, Advanced Obstetrical Ultrasound, MSK &amp; Duplex Doppler Study. Devoted to "Giving Your Disease A Name" through diagnostic precision in Sylhet.
+            Trained in Medicine &amp; Gynaecology, specialized in TVS, Advanced Obstetrical Ultrasound, MSK &amp; Duplex Doppler Study — delivering precise diagnostic answers for patients across Sylhet.
           </p>
         </div>
         <div style={{ height: 40, background: 'var(--off-white)', clipPath: 'polygon(0 100%, 100% 0, 100% 100%)' }} />

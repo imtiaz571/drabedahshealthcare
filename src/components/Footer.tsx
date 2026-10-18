@@ -177,7 +177,7 @@ export default function Footer() {
             © {new Date().getFullYear()} Dr. Abedah's Sono Healthcare (drabedahshealthcare). All rights reserved.
           </p>
           <p style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.45)' }}>
-            Dr. Abedah Begum Fazlur · Consultant Sonology · Giving Your Disease A Name
+            Dr. Abedah Begum Fazlur · Consultant Sonology
           </p>
         </div>
       </div>
